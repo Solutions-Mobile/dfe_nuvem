@@ -72,6 +72,7 @@ Begin
       'CEP_E13, CPAIS_E14, XPAIS_E15, FONE_E16, INDIEDEST_E16A, IE_E17, ISUF_E18, IM_E18A, EMAIL_E19 ' +
       'FROM NFE ' +
       'WHERE ID_NFE = %d', [IdNFe]);
+
 End;
 
 Class Function TNFeScript.ScriptAutorizacao(Const IdNFe: Integer): String;
