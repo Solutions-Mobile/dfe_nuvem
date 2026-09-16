@@ -1,46 +1,42 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBS.JsonBuilder.pas',0,1,7,1,9,0,0,,
-File_1=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBSTot.JsonBuilder.pas',0,1,76,40,78,0,0,,
-File_2=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.TotalISIBSCBS.JsonBuilder.pas',0,1,1,62,27,0,0,,
-File_3=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ICMSTot.JsonBuilder.pas',0,1,1,59,16,0,0,,
-File_4=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQNTot.JsonBuilder.pas',0,1,1,1,17,0,0,,
-File_5=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Total.JsonBuilder.pas',0,1,16,79,32,0,0,,
-File_6=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.RetTribTot.JsonBuilder.pas',0,1,1,69,22,0,0,,
-File_7=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBS.JsonBuilder.pas',0,1,36,55,66,0,0,{{68,80}
-File_8=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Imposto.JsonBuilder.pas',0,1,1,113,7,0,0,,
-File_9=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQN.JsonBuilder.pas',0,1,1,1,9,0,0,,
-File_10=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.CBS.JsonBuilder.pas',0,1,13,21,26,0,0,,
-File_11=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBSMono.JsonBuilder.pas',0,1,1,1,18,0,0,,
-File_12=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSUF.JsonBuilder.pas',0,1,1,8,13,0,0,,
-File_13=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.JsonBuilder.pas',0,1,60,64,76,0,0,,
+File_0=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas',0,1,2143,102,2160,0,0,{{389,0},{508,11},{'Bloco B - Identificação'}}{{510,0},{615,11},{'Bloco BA - Doctos Referenciados'}}{{617,0},{668,11},{'Bloco C - Emitente '}}{{670,0},{719,11},{'Bloco E - Destinatário '}}{{721,0},{755,11},{'Bloco F - Local de Retirada'}}{{757,0},{792,11},{'Bloco G - Local de Entrega'}}{{794,0},{823,11},{'Bloco GA - Autorização '}}{{2088,0},{2111,11},{'Bloco VC - Referenciamento DFe'}},
+File_1=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas',0,1,917,85,926,0,0,,
+File_2=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas',0,1,894,77,919,0,0,,
+File_3=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas',0,1,177,7,203,0,0,,
+File_4=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBS.JsonBuilder.pas',0,1,7,1,9,0,0,,
+File_5=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBSTot.JsonBuilder.pas',0,1,76,40,78,0,0,,
+File_6=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.TotalISIBSCBS.JsonBuilder.pas',0,1,1,62,27,0,0,,
+File_7=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ICMSTot.JsonBuilder.pas',0,1,1,59,16,0,0,,
+File_8=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQNTot.JsonBuilder.pas',0,1,1,1,17,0,0,,
+File_9=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Total.JsonBuilder.pas',0,1,16,79,32,0,0,,
+File_10=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.RetTribTot.JsonBuilder.pas',0,1,1,69,22,0,0,,
+File_11=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBS.JsonBuilder.pas',0,1,36,55,66,0,0,{{68,80}
+File_12=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Imposto.JsonBuilder.pas',0,1,1,113,7,0,0,,
+File_13=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQN.JsonBuilder.pas',0,1,1,1,9,0,0,,
+File_14=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.CBS.JsonBuilder.pas',0,1,13,21,26,0,0,,
 
 [Modules]
-Module0=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas
-Module1=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas
-Module2=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas
-Module3=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas
-Count=4
+Module0=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
+Module1=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
+Module2=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
+Count=3
 EditWindowCount=1
 
-[C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas]
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas]
 ModuleType=TSourceModule
 
-[C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas]
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas]
 ModuleType=TSourceModule
 
-[C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas]
-ModuleType=TSourceModule
-
-[C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas]
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas]
 ModuleType=TSourceModule
 
 [EditWindow0]
-ViewCount=4
-CurrentEditView=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas
+ViewCount=3
+CurrentEditView=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
 View0=0
 View1=1
 View2=2
-View3=3
 PercentageSizes=1
 Create=1
 Visible=1
@@ -71,47 +67,36 @@ TabDockLeftClients=DockSite3=0,PropertyInspector=1
 
 [View0]
 CustomEditViewType=TEditView
-Module=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas
-CursorX=102
-CursorY=2160
-TopLine=2143
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
+CursorX=1
+CursorY=1
+TopLine=1
 LeftCol=1
-Elisions={{389,0},{508,11},{'Bloco B - Identificação'}}{{510,0},{615,11},{'Bloco BA - Doctos Referenciados'}}{{617,0},{668,11},{'Bloco C - Emitente '}}{{670,0},{719,11},{'Bloco E - Destinatário '}}{{721,0},{755,11},{'Bloco F - Local de Retirada'}}{{757,0},{792,11},{'Bloco G - Local de Entrega'}}{{794,0},{823,11},{'Bloco GA - Autorização '}}{{2088,0},{2111,11},{'Bloco VC - Referenciamento DFe'}}
+Elisions={{90,0},{175,11},{'Conversão de tipos'}}{{177,0},{195,11},{'Mapeamento principal'}}{{197,0},{1146,11},{'Mapeamentos das tags'}}
 Bookmarks=
-EditViewName=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
 
 [View1]
 CustomEditViewType=TEditView
-Module=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas
-CursorX=85
-CursorY=926
-TopLine=917
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
+CursorX=1
+CursorY=1
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
 
 [View2]
 CustomEditViewType=TEditView
-Module=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas
-CursorX=77
-CursorY=919
-TopLine=894
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas
-
-[View3]
-CustomEditViewType=TEditView
-Module=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
 CursorX=7
-CursorY=203
-TopLine=177
+CursorY=75
+TopLine=55
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
 
 [Watches]
 Count=0
