@@ -747,6 +747,7 @@ Type
       FvIBS: Double;
       FvBC: Double; { gIBSCBS }
 
+      { UB01 } FgIS: TNFeISDTO;
       { UB17 } FgIBSUF: TNFeIBSUFDTO;
       { UB36 } FgIBSMun: TNFeIBSMunDTO;
       { UB55 } FgCBS: TNFeCBSDTO;
@@ -762,6 +763,8 @@ Type
       Property indDoacao: Integer Read FindDoacao Write FindDoacao;
       Property vIBS: Double Read FvIBS Write FvIBS;
       Property vBC: Double Read FvBC Write FvBC;
+
+      Property gIS: TNFeISDTO Read FgIS Write FgIS;
       Property gIBSUF: TNFeIBSUFDTO Read FgIBSUF Write FgIBSUF;
       Property gIBSMun: TNFeIBSMunDTO Read FgIBSMun Write FgIBSMun;
       Property gCBS: TNFeCBSDTO Read FgCBS Write FgCBS;
@@ -1885,6 +1888,7 @@ Begin
    FgIBSCBSMono := TNFeIBSCBSMonoDTO.Create;
    FgTribRegular := TNFeTribRegularDTO.Create;
    FgTribCompraGov := TNFeTribCompraGov.Create;
+   FgIS := TNFeISDTO.Create;
 End;
 
 Destructor TNFeIBSCBSDTO.Destroy;
@@ -1896,6 +1900,7 @@ Begin
    FgIBSCBSMono.Free;
    FgTribRegular.Free;
    FgTribCompraGov.Free;
+   FgIS.Free;
    Inherited;
 End;
 
