@@ -58,17 +58,14 @@ Type
    { UB102 } TNFeCBSMonoAdValoremRetenDTO = Class;
    { UB103 } TNFeCBSMonoAdValoremRetDTO = Class;
    { UB104 } TNFeCBSMonoAdValoremBioDiferencaDTO = Class;
-
-   // IMPLEMENTAR
    { UB105a - Totais do Item }
-   { UB106 - gTransfCred }
-   { UB112 - gAjusteCompet }
-   { UB116 - gEstornoCred }
-   { UB120 - gCredPresOper }
-   { UB123 - gIBSCredPres }
-   { UB127 - gCBSCredPres }
-   { UB131 - gCredPresIBSZFM }
-   // *************************
+   { UB106 } TNFeTransfCredDTO = Class;
+   { UB112 } TNFeAjusteCompetDTO = Class;
+   { UB116 } TNFeEstornoCredDTO = Class;
+   { UB120 } TNFeCredPresOperDTO = Class;
+   { UB123 } TNFeIBSCredPresDTO = Class;
+   { UB127 } TNFeCBSCredPresDTO = Class;
+   { UB131 } TNFeCredPresIBSZFMDTO = Class;
 
    { VC } TNFeDFeReferenciadoDTO = Class;
    { W-W02 } TNFeICMSTotDTO = Class;
@@ -754,6 +751,11 @@ Type
       { UB68 } FgTribRegular: TNFeTribRegularDTO;
       { UB82a } FgTribCompraGov: TNFeTribCompraGov;
       { UB84 } FgIBSCBSMono: TNFeIBSCBSMonoDTO;
+      { UB106 } FgTransfCred: TNFeTransfCredDTO;
+      { UB112 } FgAjusteCompet: TNFeAjusteCompetDTO;
+      { UB116 } FgEstornoCred: TNFeEstornoCredDTO;
+      { UB120 } FgCredPresOper: TNFeCredPresOperDTO;
+      { UB131 } FgCredPresIBSZFM: TNFeCredPresIBSZFMDTO;
    Public
       Constructor Create;
       Destructor Destroy; Override;
@@ -763,15 +765,19 @@ Type
       Property indDoacao: Integer Read FindDoacao Write FindDoacao;
       Property vIBS: Double Read FvIBS Write FvIBS;
       Property vBC: Double Read FvBC Write FvBC;
-
       Property gIS: TNFeISDTO Read FgIS Write FgIS;
       Property gIBSUF: TNFeIBSUFDTO Read FgIBSUF Write FgIBSUF;
       Property gIBSMun: TNFeIBSMunDTO Read FgIBSMun Write FgIBSMun;
       Property gCBS: TNFeCBSDTO Read FgCBS Write FgCBS;
       Property gTribRegular: TNFeTribRegularDTO Read FgTribRegular Write FgTribRegular;
       Property gTribCompraGov: TNFeTribCompraGov Read FgTribCompraGov Write FgTribCompraGov;
-
       Property gIBSCBSMono: TNFeIBSCBSMonoDTO Read FgIBSCBSMono Write FgIBSCBSMono;
+      Property gTransfCred: TNFeTransfCredDTO Read FgTransfCred;
+      Property gAjusteCompet: TNFeAjusteCompetDTO Read FgAjusteCompet;
+      Property gEstornoCred: TNFeEstornoCredDTO Read FgEstornoCred;
+      Property gCredPresOper: TNFeCredPresOperDTO Read FgCredPresOper;
+      Property gCredPresIBSZFM: TNFeCredPresIBSZFMDTO Read FgCredPresIBSZFM;
+
    End;
 
    { UB01 } TNFeISDTO = Class
@@ -1174,6 +1180,61 @@ Type
    Public
       Property qBCBioComb: Double Read FqBCBioComb Write FqBCBioComb;
       Property vCBSDiferenca: Double Read FvCBSDiferenca Write FvCBSDiferenca;
+   End;
+
+   { UB106 } TNFeTransfCredDTO = Class
+   Public
+      vIBS: Double;
+      vCBS: Double;
+   End;
+
+   { UB112 } TNFeAjusteCompetDTO = Class
+   Public
+      competApur: String;
+      vIBS: Double;
+      vCBS: Double;
+   End;
+
+   { UB116 } TNFeEstornoCredDTO = Class
+   Public
+      vIBSEstCred: Double;
+      vCBSEstCred: Double;
+   End;
+
+   { UB120 } TNFeCredPresOperDTO = Class
+   Private
+      FgIBSCredPres: TNFeIBSCredPresDTO;
+      FgCBSCredPres: TNFeCBSCredPresDTO;
+   Public
+      vBCCredPres: Double;
+      cCredPres: String;
+
+      Constructor Create;
+      Destructor Destroy; Override;
+
+      Property gIBSCredPres: TNFeIBSCredPresDTO Read FgIBSCredPres;
+      Property gCBSCredPres: TNFeCBSCredPresDTO Read FgCBSCredPres;
+   End;
+
+   { UB123 } TNFeIBSCredPresDTO = Class
+   Public
+      pCredPres: Double;
+      vCredPres: Double;
+      vCredPresCondSus: Double;
+   End;
+
+   { UB127 } TNFeCBSCredPresDTO = Class
+   Public
+      pCredPres: Double;
+      vCredPres: Double;
+      vCredPresCondSus: Double;
+   End;
+
+   { UB131 } TNFeCredPresIBSZFMDTO = Class
+   Public
+      competApur: String;
+      tpCredPresIBSZFM: Integer;
+      vCredPresIBSZFM: Double;
    End;
 
    { VC } TNFeDFeReferenciadoDTO = Class
@@ -1694,8 +1755,7 @@ Type
       FPagamentoAntecipado: TNFePagamentoAntecipadoDTO;
    Public
       Constructor Create;
-      Destructor Destroy;
-         Override;
+      Destructor Destroy; Override;
       Procedure AdicionarItem(AItem: TNFeItemDTO);
 
       Property Ide: TNFeIdeDTO Read FIde Write FIde;
@@ -1889,10 +1949,21 @@ Begin
    FgTribRegular := TNFeTribRegularDTO.Create;
    FgTribCompraGov := TNFeTribCompraGov.Create;
    FgIS := TNFeISDTO.Create;
+   FgTransfCred := TNFeTransfCredDTO.Create;
+   FgAjusteCompet := TNFeAjusteCompetDTO.Create;
+   FgEstornoCred := TNFeEstornoCredDTO.Create;
+   FgCredPresOper := TNFeCredPresOperDTO.Create;
+   FgCredPresIBSZFM := TNFeCredPresIBSZFMDTO.Create;
 End;
 
 Destructor TNFeIBSCBSDTO.Destroy;
 Begin
+   FgTransfCred.Free;
+   FgAjusteCompet.Free;
+   FgEstornoCred.Free;
+   FgCredPresOper.Free;
+   FgCredPresIBSZFM.Free;
+
    FgIBSUF.Free;
    FgIBSMun.Free;
    FgTribCompraGov.Free;
@@ -2202,6 +2273,24 @@ Destructor TNFeTotalISIBSCBSDTO.Destroy;
 Begin
    FIBSCBSTot.Free;
    FISTot.Free;
+
+   Inherited;
+End;
+
+{ TNFeCredPresOperDTO }
+
+Constructor TNFeCredPresOperDTO.Create;
+Begin
+   Inherited Create;
+
+   FgIBSCredPres := TNFeIBSCredPresDTO.Create;
+   FgCBSCredPres := TNFeCBSCredPresDTO.Create;
+End;
+
+Destructor TNFeCredPresOperDTO.Destroy;
+Begin
+   FgIBSCredPres.Free;
+   FgCBSCredPres.Free;
 
    Inherited;
 End;

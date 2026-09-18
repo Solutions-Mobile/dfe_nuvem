@@ -42,35 +42,29 @@ Type
       Class Function MapearReboque(ADataSet: TDataSet): TNFeVeicTranspDTO; Static;
 
       { ATENÇÃO }
+      { IMPLEMENTAR } Class Procedure MapearReferenciados(ADataSet: TDataSet; ADTO: TNFeDTO); Static;
       Class Function MapearObsFisco(ADataSet: TDataSet): TNFeObsFiscoDTO; Static;
 
       { ATUALIZAR } Class Procedure MapearInfoAdicional(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO); Static;
-      { UTILIZAR } Class Procedure MapearCompraGov(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO); Static;
-
-      { IMPLEMENTAR } Class Procedure MapearReferenciados(ADataSet: TDataSet; ADTO: TNFeDTO); Static;
       { IMPLEMENTAR } Class Function MapearObsCont(ADataSet: TDataSet): TNFeObsContDTO; Static;
       { IMPLEMENTAR } Class Function MapearProcRef(ADataSet: TDataSet): TNFeProcRefDTO; Static;
+      { UTILIZAR } Class Procedure MapearCompraGov(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO); Static;
       { IMPLEMENTAR } Class Function MapearPagamentoAntecipado(ADataSet: TDataSet): TNFePagamentoAntecipadoDTO; Static;
       { IMPLEMENTAR } Class Function MapearRefDFeAnt(ADataSet: TDataSet): String; Static;
       { IMPLEMENTAR } Class Function MapearRefNFeAntecipada(ADataSet: TDataSet): String; Static;
       // *****************
-
-      { IS }
-      Class Procedure MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO); Static;
-
-      { IBS/CBS }
+      { IS/IBS/CBS }
+      Class Procedure MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO) ;  Static;
       Class Procedure MapearIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO); Static;
+
+      Class Function MapearGIBSUF(ADataSet: TDataSet): TNFeIBSUFDTO;
+      Class Function MapearGIBSMun(ADataSet: TDataSet): TNFeIBSMunDTO;
+      Class Function MapearGCBS(ADataSet: TDataSet): TNFeCBSDTO;
+
+      { ??? }
+      Class Function MapearGCBSGALCZFMCBS(ADataSet: TDataSet): TNFeALCZFMCBS;
       Class Function MapearIBSCBSGTribRegular(ADataSet: TDataSet): TNFeTribRegularDTO;
       Class Function MapearIBSCBSTribCompraGov(ADataSet: TDataSet): TNFeTribCompraGov;
-
-      { IBS-UF-Dif, DevTrib, Red }
-      Class Function MapearGIBSUF(ADataSet: TDataSet): TNFeIBSUFDTO;
-      { IBS-MunDif, DevTrib, Red }
-      Class Function MapearGIBSMun(ADataSet: TDataSet): TNFeIBSMunDTO;
-      { CBS-Dif, DevTrib, Red }
-      Class Function MapearGCBS(ADataSet: TDataSet): TNFeCBSDTO;
-      { CBS-ALCZFMCBS }
-      Class Function MapearGCBSGALCZFMCBS(ADataSet: TDataSet): TNFeALCZFMCBS;
 
       { IBS-MonoAdRem }
       Class Function MapearGIBSMonoAdRemPadrao(ADataSet: TDataSet): TNFeIBSMonoAdRemPadraoDTO;
@@ -95,14 +89,6 @@ Type
       Class Function MapearGCBSMonoAdValoremBioDiferenca(ADataSet: TDataSet): TNFeCBSMonoAdValoremBioDiferencaDTO;
       Class Function MapearGIBSCBSMono(ADataSet: TDataSet): TNFeIBSCBSMonoDTO;
 
-      { Ajustes/Transf/CredPres }
-      Class Procedure MapearTransfCred(ADataSet: TDataSet; ADTO: TNFeTransfCredDTO);
-      Class Procedure MapearAjusteCompet(ADataSet: TDataSet; ADTO: TNFeAjusteCompetDTO);
-      Class Procedure MapearEstornoCred(ADataSet: TDataSet; ADTO: TNFeEstornoCredDTO);
-      Class Procedure MapearCredPresOper(ADataSet: TDataSet; ADTO: TNFeCredPresOperDTO);
-      Class Procedure MapearIBSCredPres(ADataSet: TDataSet; ADTO: TNFeIBSCredPresDTO);
-      Class Procedure MapearCBSCredPres(ADataSet: TDataSet; ADTO: TNFeCBSCredPresDTO);
-      Class Procedure MapearCredPresIBSZFM(ADataSet: TDataSet; ADTO: TNFeCredPresIBSZFMDTO);
    Public
       Class Procedure Mapear(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO);
 
@@ -896,50 +882,163 @@ End;
 
 Class Procedure TNFeMapper.MapearIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO);
 Begin
+   { IS }
+   // ADTO.gIS.CST := S(ADataSet, 'CSTIS_UB02');
+   // ADTO.gIS.cClassTribIS := S(ADataSet, 'CCLASSTRIBIS_UB03');
+   // ADTO.gIS.vBCIS := D(ADataSet, 'VBCIS_UB05');
+   // ADTO.gIS.PIS := D(ADataSet, 'PIS_UB06');
+   // ADTO.gIS.adRemIS := D(ADataSet, 'PISESPEC_UB07');
+   // ADTO.gIS.uTrib := S(ADataSet, 'UTRIB_UB09');
+   // ADTO.gIS.qTrib := D(ADataSet, 'QTRIB_UB10');
+   // ADTO.gIS.vIS := D(ADataSet, 'VIS_UB11');
+   ADTO.gIS := MapearIS(ADataSet);
+
    ADTO.CST := S(ADataSet, 'CST_UB13');
    ADTO.cClassTrib := S(ADataSet, 'CCLASSTRIB_UB14');
    ADTO.indDoacao := I(ADataSet, 'INDDOACAO_UB14A');
    ADTO.vBC := D(ADataSet, 'VBC_UB16');
 
-   { UB17 } ADTO.gIBSUF := MapearGIBSUF(ADataSet);
-   { UB36 } ADTO.gIBSMun := MapearGIBSMun(ADataSet);
-   { UB55 } ADTO.gCBS := MapearGCBS(ADataSet);
-   { UB66a } ADTO.gCBS.gALCZFMCBS := MapearGCBSGALCZFMCBS(ADataSet);
-   { UB68 } ADTO.gTribRegular := MapearIBSCBSGTribRegular(ADataSet);
-   { UB82a } ADTO.gTribCompraGov := MapearIBSCBSTribCompraGov(ADataSet);
+   { UB17 }
+   // ADTO.gIBSUF.pIBSUF := D(ADataSet, 'PIBSUF_UB18');
+   // ADTO.gIBSUF.vIBSUF := D(ADataSet, 'VIBSUF_UB35');
+   // ADTO.gIBSUF.pDif := D(ADataSet, 'PDIF_UB22');
+   // ADTO.gIBSUF.vDif := D(ADataSet, 'VDIF_UB23');
+   // ADTO.gIBSUF.pDevTrib := D(ADataSet, 'PDEVTRIB_UB24A');
+   // ADTO.gIBSUF.vDevTrib := D(ADataSet, 'VDEVTRIB_UB25');
+   // ADTO.gIBSUF.pRedAliq := D(ADataSet, 'PREDALIQ_UB27');
+   // ADTO.gIBSUF.pAliqEfet := D(ADataSet, 'PALIQEFET_UB28');
+   ADTO.gIBSUF := MapearGIBSUF(ADataSet);
 
-   { IBS-MonoAdRem }
-   { UB86 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao := MapearGIBSMonoAdRemPadrao(ADataSet);
-   { UB87 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten := MapearGIBSMonoAdRemReten(ADataSet);
-   { UB88 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoRet := MapearGIBSMonoAdRemRet(ADataSet);
-   { UB89 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca := MapearGIBSMonoAdRemBioDiferenca(ADataSet);
+   { UB36 }
+   // ADTO.gIBSMun.pIBSMun := D(ADataSet, 'PIBSMUN_UB37');
+   // ADTO.gIBSMun.vIBSMun := D(ADataSet, 'VIBSMUN_UB54');
+   // ADTO.gIBSMun.pDif := D(ADataSet, 'PDIF_UB41');
+   // ADTO.gIBSMun.vDif := D(ADataSet, 'VDIF_UB42');
+   // ADTO.gIBSMun.pDevTrib := D(ADataSet, 'PDEVTRIB_UB43A');
+   // ADTO.gIBSMun.vDevTrib := D(ADataSet, 'VDEVTRIB_UB44');
+   // ADTO.gIBSMun.pRedAliq := D(ADataSet, 'PREDALIQ_UB46');
+   // ADTO.gIBSMun.pAliqEfet := D(ADataSet, 'PALIQEFET_UB47');
+   ADTO.gIBSMun := MapearGIBSMun(ADataSet);
+   { UB55 }
+   // ADTO.gCBS.pCBS := D(ADataSet, 'PCBS_UB56');
+   // ADTO.gCBS.vCBS := D(ADataSet, 'VCBS_UB67');
+   // ADTO.gCBS.pDif := D(ADataSet, 'PDIF_UB60');
+   // ADTO.gCBS.vDif := D(ADataSet, 'VDIF_UB61');
+   // ADTO.gCBS.pDevTrib := D(ADataSet, 'CST_Q06'); { <- Falta-UB62A }
+   // ADTO.gCBS.vDevTrib := D(ADataSet, 'VDEVTRIB_UB63');
+   // ADTO.gCBS.pRedAliq := D(ADataSet, 'PREDALIQ_UB65');
+   // ADTO.gCBS.pAliqEfet := D(ADataSet, 'PALIQEFET_UB66');
+   ADTO.gCBS := MapearGCBS(ADataSet);
 
-   { IBS-MonoAdValorem }
-   { UB91 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao := MapearGIBSMonoAdValoremPadrao(ADataSet);
-   { UB92 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten := MapearGIBSMonoAdValoremReten(ADataSet);
-   { UB93 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoRet := MapearGIBSMonoAdValoremRet(ADataSet);
-   { UB94 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca := MapearGIBSMonoAdValoremBioDiferenca(ADataSet);
+   { UB66a -> NÃO IMPLEMENTADO }
+   // ADTO.gCBS.gALCZFMCBS.tpALCZFMCBS := I(ADataSet, 'TPALCZFMCBS_UB66B');
+   // ADTO.gCBS.gALCZFMCBS.nProcSuframa := S(ADataSet, 'NPROCSUFRAMA_UB66C');
+   // ADTO.gCBS.gALCZFMCBS.pAliqEfetRegCBS := I(ADataSet, 'PALIQEFETREGCBS_UB66D');
+   // ADTO.gCBS.gALCZFMCBS.vTribRegCBS := I(ADataSet, 'VTRIBREGCBS_UB66E');
+   ADTO.gCBS.gALCZFMCBS := MapearGCBSGALCZFMCBS(ADataSet);
 
-   { CBS-MonoAdRem }
-   { UB96 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao := MapearGCBSMonoAdRemPadrao(ADataSet);
-   { UB97 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten := MapearGCBSMonoAdRemReten(ADataSet);
-   { UB98 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoRet := MapearGCBSMonoAdRemRet(ADataSet);
-   { UB99 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca := MapearGCBSMonoAdRemBioDiferenca(ADataSet);
+   { UB68 }
+   // ADTO.gTribRegular.CSTReg := S(ADataSet, 'CSTREG_UB69');
+   // ADTO.gTribRegular.cClassTribReg := S(ADataSet, 'CCLASSTRIBREG_UB70');
+   // ADTO.gTribRegular.pAliqEfetRegIBSUF := D(ADataSet, 'PALIQEFETREGIBSUF_UB71');
+   // ADTO.gTribRegular.vTribRegIBSUF := D(ADataSet, 'VTRIBREGIBSUF_UB72');
+   // ADTO.gTribRegular.pAliqEfetRegIBSMun := D(ADataSet, 'PALIQEFETREGIBSMUN_UB72A');
+   // ADTO.gTribRegular.vTribRegIBSMun := D(ADataSet, 'VTRIBREGIBSMUN_UB72B');
+   // ADTO.gTribRegular.pAliqEfetRegCBS := D(ADataSet, 'PALIQEFETREGCBS_UB72C');
+   // ADTO.gTribRegular.vTribRegCBS := D(ADataSet, 'VTRIBREGCBS_UB72D');
+   ADTO.gTribRegular := MapearIBSCBSGTribRegular(ADataSet);
 
-   { CBS-MonoAdValorem }
-   { UB101 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao := MapearGCBSMonoAdValoremPadrao(ADataSet);
-   { UB102 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten := MapearGCBSMonoAdValoremReten(ADataSet);
-   { UB103 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoRet := MapearGCBSMonoAdValoremRet(ADataSet);
-   { UB104 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca := MapearGCBSMonoAdValoremBioDiferenca(ADataSet);
+   { UB82a }
+   // ADTO.gTribCompraGov.pAliqIBSUF := D(ADataSet, 'PALIQIBSUF_UB82B');
+   // ADTO.gTribCompraGov.vTribIBSUF := D(ADataSet, 'VTRIBIBSUF_UB82C');
+   // ADTO.gTribCompraGov.pAliqIBSMun := D(ADataSet, 'PALIQIBSMUN_UB82D');
+   // ADTO.gTribCompraGov.vTribIBSMun := D(ADataSet, 'VTRIBIBSMUN_UB82E');
+   // ADTO.gTribCompraGov.pAliqCBS := D(ADataSet, 'PALIQCBS_UB82F');
+   // ADTO.gTribCompraGov.vTribCBS := D(ADataSet, 'VTRIBCBS_UB82G');
+   ADTO.gTribCompraGov := MapearIBSCBSTribCompraGov(ADataSet);
 
-   { Totais-Mono }
-   { UB105 } ADTO.gIBSCBSMono := MapearGIBSCBSMono(ADataSet);
+   { MonoAdRem }
+   { UB86 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao.qBCMono := D(ADataSet, 'QBCMONO_UB86A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao.adRemIBS := D(ADataSet, 'ADREMIBS_UB86B');
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao.vIBSMono := D(ADataSet, 'VIBSMONO_UB86C');
+   ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao := MapearGIBSMonoAdRemPadrao(ADataSet);
 
-   { UB106 } MapearTransfCred(ADataSet, ADTO.gTransfCred);
-   { UB112 } MapearAjusteCompet(ADataSet, ADTO.gAjusteCompet);
-   { UB116 } MapearEstornoCred(ADataSet, ADTO.gEstornoCred);
-   { UB120 } MapearCredPresOper(ADataSet, ADTO.gCredPresOper);
-   { UB131 } MapearCredPresIBSZFM(ADataSet, ADTO.gCredPresIBSZFM);
+   { UB87 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten.qBCMonoReten := D(ADataSet, 'QBCMONORETEN_UB87A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten.adRemIBSReten := D(ADataSet, 'ADREMIBSRETEN_UB87B');
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten.vIBSMonoReten := D(ADataSet, 'VIBSMONORETEN_UB87C');
+   ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten := MapearGIBSMonoAdRemReten(ADataSet);
+   { UB88 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoRet.vIBSMonoRet := D(ADataSet, 'VIBSMONORET_UB88A');
+   ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoRet := MapearGIBSMonoAdRemRet(ADataSet);
+   { UB89 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca.qBCBioComb := D(ADataSet, 'QBCBIOCOMB_UB89A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca.vIBSDiferenca := D(ADataSet, 'VIBSDIFERENCA_UB89B');
+   ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca := MapearGIBSMonoAdRemBioDiferenca(ADataSet);
+
+   { MonoAdValorem }
+   { UB91 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.vBCMono := D(ADataSet, 'VBCMONO_UB91A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.pAliqMonoUF := D(ADataSet, 'PALIQMONOUF_UB91B');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.vIBSMonoUF := D(ADataSet, 'VIBSMONOUF_UB91C');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.pAliqMonoMun := D(ADataSet, 'PALIQMONOMUN_UB91D');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.vIBSMonoMun := D(ADataSet, 'VIBSMONOMUN_UB91E');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao.vIBSMono := D(ADataSet, 'VIBSMONO_UB91F');
+   ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao := MapearGIBSMonoAdValoremPadrao(ADataSet);
+
+   { UB92 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten.vBCMonoReten := D(ADataSet, 'VBCMONORETEN_UB92A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten.pAliqMonoReten := D(ADataSet, 'PALIQMONORETEN_UB92B');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten.vIBSMonoReten := D(ADataSet, 'VIBSMONORETEN_UB92C');
+   ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten := MapearGIBSMonoAdValoremReten(ADataSet);
+
+   { UB93 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoRet.vIBSMonoRet := D(ADataSet, 'VIBSMONORET_UB93A');
+   ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoRet := MapearGIBSMonoAdValoremRet(ADataSet);
+   { UB94 }
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca.qBCBioComb := D(ADataSet, 'QBCBIOCOMB_UB94A');
+   // ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca.vIBSDiferenca := D(ADataSet, 'VIBSDIFERENCA_UB94B');
+   ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca := MapearGIBSMonoAdValoremBioDiferenca(ADataSet);
+   { UB94 }
+   { UB96 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao.qBCMono := D(ADataSet, 'QBCMONO_UB96A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao.adRemCBS := D(ADataSet, 'ADREMCBS_UB96B');
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao.vCBSMono := D(ADataSet, 'VCBSMONO_UB96C');
+   ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao := MapearGCBSMonoAdRemPadrao(ADataSet);
+   { UB97 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten.qBCMonoReten := D(ADataSet, 'QBCMONORETEN_UB97A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten.adRemCBSReten := D(ADataSet, 'ADREMCBSRETEN_UB97B');
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten.vCBSMonoReten := D(ADataSet, 'VCBSMONORETEN_UB97C');
+   ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten := MapearGCBSMonoAdRemReten(ADataSet);
+   { UB98 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoRet.vCBSMonoRet := D(ADataSet, 'VCBSMONORET_UB98A');
+   ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoRet := MapearGCBSMonoAdRemRet(ADataSet);
+   { UB99 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca.qBCBioComb := D(ADataSet, 'QBCBIOCOMB_UB99A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca.vCBSDiferenca := D(ADataSet, 'VCBSDIFERENCA_UB99B');
+   ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca := MapearGCBSMonoAdRemBioDiferenca(ADataSet);
+   { UB101 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao.vBCMono := D(ADataSet, 'VBCMONO_UB101A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao.pAliqMonoCBS := D(ADataSet, 'PALIQMONOCBS_UB101B');
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao.vCBSMono := D(ADataSet, 'VCBSMONO_UB101C');
+   ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao := MapearGCBSMonoAdValoremPadrao(ADataSet);
+   { UB102 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten.vBCMonoReten := D(ADataSet, 'VBCMONORETEN_UB102A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten.pAliqMonoReten := D(ADataSet, 'PALIQMONORETEN_UB102B');
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten.vBCMonoReten := D(ADataSet, 'VCBSMONORETEN_UB102C');
+   ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten := MapearGCBSMonoAdValoremReten(ADataSet);
+   { UB103 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoRet.vCBSMonoRet := D(ADataSet, 'VCBSMONORET_UB103A');
+   ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoRet := MapearGCBSMonoAdValoremRet(ADataSet);
+   { UB104 }
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca.qBCBioComb := D(ADataSet, 'QBCBIOCOMB_UB104A');
+   // ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca.vCBSDiferenca := D(ADataSet, 'VCBSDIFERENCA_UB104B');
+   ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca := MapearGCBSMonoAdValoremBioDiferenca(ADataSet);
+   { UB105 }
+   // ADTO.gIBSCBSMono.vTotIBSMonoItem := D(ADataSet, 'VTOTIBSMONOITEM_UB105A');
+   // ADTO.gIBSCBSMono.vTotCBSMonoItem := D(ADataSet, 'VTOTCBSMONOITEM_UB105B');
+   ADTO.gIBSCBSMono := MapearGIBSCBSMono(ADataSet);
 End;
 
 Class Function TNFeMapper.MapearGCBS(ADataSet: TDataSet): TNFeCBSDTO;
@@ -1083,17 +1182,26 @@ Begin
    Result.pAliqEfet := D(ADataSet, 'PALIQEFET_UB28');
 End;
 
-Class Procedure TNFeMapper.MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO);
+Class Procedure TNFeMapper.MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO) ;
 Begin
    { IS }
-   ADTO.CST := S(ADataSet, 'CSTIS_UB02');
-   ADTO.cClassTribIS := S(ADataSet, 'CCLASSTRIBIS_UB03');
-   ADTO.vBCIS := D(ADataSet, 'VBCIS_UB05');
-   ADTO.PIS := D(ADataSet, 'PIS_UB06');
-   ADTO.adRemIS := D(ADataSet, 'PISESPEC_UB07');
-   ADTO.uTrib := S(ADataSet, 'UTRIB_UB09');
-   ADTO.qTrib := D(ADataSet, 'QTRIB_UB10');
-   ADTO.vIS := D(ADataSet, 'VIS_UB11');
+    ADTO.gIS.CST := S(ADataSet, 'CSTIS_UB02');
+    ADTO.gIS.cClassTribIS := S(ADataSet, 'CCLASSTRIBIS_UB03');
+    ADTO.gIS.vBCIS := D(ADataSet, 'VBCIS_UB05');
+    ADTO.gIS.PIS := D(ADataSet, 'PIS_UB06');
+    ADTO.gIS.adRemIS := D(ADataSet, 'PISESPEC_UB07');
+    ADTO.gIS.uTrib := S(ADataSet, 'UTRIB_UB09');
+    ADTO.gIS.qTrib := D(ADataSet, 'QTRIB_UB10');
+    ADTO.gIS.vIS := D(ADataSet, 'VIS_UB11');
+
+   Result.CST := S(ADataSet, 'CSTIS_UB02');
+   Result.cClassTribIS := S(ADataSet, 'CCLASSTRIBIS_UB03');
+   Result.vBCIS := D(ADataSet, 'VBCIS_UB05');
+   Result.PIS := D(ADataSet, 'PIS_UB06');
+   Result.adRemIS := D(ADataSet, 'PISESPEC_UB07');
+   Result.uTrib := S(ADataSet, 'UTRIB_UB09');
+   Result.qTrib := D(ADataSet, 'QTRIB_UB10');
+   Result.vIS := D(ADataSet, 'VIS_UB11');
 End;
 
 Class Function TNFeMapper.MapearGIBSMonoAdValoremRet(ADataSet: TDataSet): TNFeIBSMonoAdValoremRetDTO;
@@ -1180,54 +1288,6 @@ Begin
    Result := TNFeIBSCBSMonoDTO.Create;
    Result.vTotIBSMonoItem := D(ADataSet, 'VTOTIBSMONOITEM_UB105a');
    Result.vTotCBSMonoItem := D(ADataSet, 'VTOTCBSMONOITEM_UB105b');
-End;
-
-Class Procedure TNFeMapper.MapearTransfCred(ADataSet: TDataSet; ADTO: TNFeTransfCredDTO);
-Begin
-   ADTO.vIBS := D(ADataSet, 'VIBS_UB107');
-   ADTO.vCBS := D(ADataSet, 'VCBS_UB108');
-End;
-
-Class Procedure TNFeMapper.MapearAjusteCompet(ADataSet: TDataSet; ADTO: TNFeAjusteCompetDTO);
-Begin
-   ADTO.competApur := S(ADataSet, 'COMPETAPUR_UB113');
-   ADTO.vIBS := D(ADataSet, 'VIBS_UB114');
-   ADTO.vCBS := D(ADataSet, 'VCBS_UB115');
-End;
-
-Class Procedure TNFeMapper.MapearEstornoCred(ADataSet: TDataSet; ADTO: TNFeEstornoCredDTO);
-Begin
-   ADTO.vIBSEstCred := D(ADataSet, 'VIBSESTCRED_UB117');
-   ADTO.vCBSEstCred := D(ADataSet, 'VCBSESTCRED_UB118');
-End;
-
-Class Procedure TNFeMapper.MapearCredPresOper(ADataSet: TDataSet; ADTO: TNFeCredPresOperDTO);
-Begin
-   ADTO.vBCCredPres := D(ADataSet, 'VBCCREDPRES_UB121');
-   ADTO.cCredPres := S(ADataSet, 'CCREDPRES_UB122');
-   { UB123 } MapearIBSCredPres(ADataSet, ADTO.gIBSCredPres);
-   { UB127 } MapearCBSCredPres(ADataSet, ADTO.gCBSCredPres);
-End;
-
-Class Procedure TNFeMapper.MapearIBSCredPres(ADataSet: TDataSet; ADTO: TNFeIBSCredPresDTO);
-Begin
-   ADTO.pCredPres := D(ADataSet, 'PCREDPRES_UB124');
-   ADTO.vCredPres := D(ADataSet, 'VCREDPRES_UB125');
-   ADTO.vCredPresCondSus := D(ADataSet, 'VCREDPRESCONDSUS_UB126');
-End;
-
-Class Procedure TNFeMapper.MapearCBSCredPres(ADataSet: TDataSet; ADTO: TNFeCBSCredPresDTO);
-Begin
-   ADTO.pCredPres := D(ADataSet, 'PCREDPRES_UB128');
-   ADTO.vCredPres := D(ADataSet, 'VCREDPRES_UB129');
-   ADTO.vCredPresCondSus := D(ADataSet, 'VCREDPRESCONDSUS_UB130');
-End;
-
-Class Procedure TNFeMapper.MapearCredPresIBSZFM(ADataSet: TDataSet; ADTO: TNFeCredPresIBSZFMDTO);
-Begin
-   ADTO.competApur := S(ADataSet, 'COMPETAPUR_UB132');
-   ADTO.tpCredPresIBSZFM := I(ADataSet, 'TPCREDPRESIBSZFM_UB133');
-   ADTO.vCredPresIBSZFM := D(ADataSet, 'VCREDPRESIBSZFM_UB134');
 End;
 
 {$ENDREGION}
