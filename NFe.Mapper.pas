@@ -55,12 +55,13 @@ Type
       { IMPLEMENTAR } Class Function MapearRefNFeAntecipada(ADataSet: TDataSet): String; Static;
       // *****************
 
-      { IS }
-      Class Procedure MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO); Static;
-
       { IBS/CBS }
+      Class Procedure MapearISIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO); Static;
+      Class Procedure MapearIS(ADataSet: TDataSet; ADTO: TNFeISDTO); Static;
       Class Procedure MapearIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO); Static;
+      { IBS/CBS - Trib Regular }
       Class Function MapearIBSCBSGTribRegular(ADataSet: TDataSet): TNFeTribRegularDTO;
+      { IBS/CBS - Compra Gov }
       Class Function MapearIBSCBSTribCompraGov(ADataSet: TDataSet): TNFeTribCompraGov;
 
       { IBS-UF-Dif, DevTrib, Red }
@@ -72,6 +73,8 @@ Type
       { CBS-ALCZFMCBS }
       Class Function MapearGCBSGALCZFMCBS(ADataSet: TDataSet): TNFeALCZFMCBS;
 
+      { IBS / CBS - Mono }
+      Class Function MapearGIBSCBSMono(ADataSet: TDataSet): TNFeIBSCBSMonoDTO;
       { IBS-MonoAdRem }
       Class Function MapearGIBSMonoAdRemPadrao(ADataSet: TDataSet): TNFeIBSMonoAdRemPadraoDTO;
       Class Function MapearGIBSMonoAdRemReten(ADataSet: TDataSet): TNFeIBSMonoAdRemRetenDTO;
@@ -93,7 +96,6 @@ Type
       Class Function MapearGCBSMonoAdValoremReten(ADataSet: TDataSet): TNFeCBSMonoAdValoremRetenDTO;
       Class Function MapearGCBSMonoAdValoremRet(ADataSet: TDataSet): TNFeCBSMonoAdValoremRetDTO;
       Class Function MapearGCBSMonoAdValoremBioDiferenca(ADataSet: TDataSet): TNFeCBSMonoAdValoremBioDiferencaDTO;
-      Class Function MapearGIBSCBSMono(ADataSet: TDataSet): TNFeIBSCBSMonoDTO;
 
       { Ajustes/Transf/CredPres }
       Class Procedure MapearTransfCred(ADataSet: TDataSet; ADTO: TNFeTransfCredDTO);
@@ -418,38 +420,83 @@ Begin
    ADTO.prod.CNPJFab := S(ADataSet, 'CNPJFAB_I05E');
    ADTO.prod.cBenef := S(ADataSet, 'CBENEF_I05F');
 
+   { IMPLEMENTAR }
+   // MapearIPI(ADataSet, ADTO.Imposto.ICMS);
+
    MapearICMS(ADataSet, ADTO.Imposto.ICMS);
    MapearPIS(ADataSet, ADTO.Imposto.PIS);
    MapearCOFINS(ADataSet, ADTO.Imposto.COFINS);
    MapearISSQN(ADataSet, ADTO.Imposto.ISSQN);
-   MapearIBSCBS(ADataSet, ADTO.Imposto.IBSCBS);
+
+   //MapearIBSCBS(ADataSet, ADTO.Imposto.IBSCBS);
 
    ADTO.prod.vTotTrib := D(ADataSet, 'VTOTTRIB_M02');
    ADTO.infAdProd := S(ADataSet, 'INFADPROD_V01');
 
 End;
 
+(*
+  Class Procedure TNFeMapper.MapearItens(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO);
+  Var
+  Item: TNFeItemDTO;
+  LQuery: TFDQuery;
+  Begin
+  LQuery := TFDQuery.Create(Nil);
+  LQuery := ExecutarQuery(AConnection, TNFeScript.ScriptProdutosEImpostos(AIdNFe));
+  If LQuery.IsEmpty Then
+  Exit;
+
+  Try
+  LQuery.First;
+  While Not LQuery.Eof Do
+  Begin
+  Item := TNFeItemDTO.Create;
+  MapearItem(LQuery, Item);
+
+  ADTO.AdicionarItem(Item);
+  LQuery.Next;
+  End;
+  Finally
+  LQuery.Free;
+  End;
+  End;
+*)
+
 Class Procedure TNFeMapper.MapearItens(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO);
 Var
+   LQueryItens: TFDQuery;
+   LQueryISIBSCBS: TFDQuery;
    Item: TNFeItemDTO;
-   LQuery: TFDQuery;
 Begin
-   LQuery := TFDQuery.Create(Nil);
-   LQuery := ExecutarQuery(AConnection, TNFeScript.ScriptProdutosEImpostos(AIdNFe));
-   If LQuery.IsEmpty Then
+   LQueryItens := ExecutarQuery(AConnection, TNFeScript.ScriptProdutosEImpostos(AIdNFe));
+   If LQueryItens.IsEmpty Then
       Exit;
 
+   LQueryISIBSCBS := ExecutarQuery(AConnection, TNFeScript.ScriptISIBSCBS(AIdNFe));
    Try
-      LQuery.First;
-      While Not LQuery.Eof Do
+      LQueryItens.First;
+
+      While Not LQueryItens.Eof Do
       Begin
          Item := TNFeItemDTO.Create;
-         MapearItem(LQuery, Item);
+
+         // TRIBUTOS EXISTENTES - IPI, ICMS, ...
+         MapearItem(LQueryItens, Item);
+
+         If LQueryISIBSCBS.Locate('ID_ITEM', LQueryItens.FieldByName('ID_ITEM').AsInteger, [])
+         Then
+         Begin
+            MapearISIBSCBS(LQueryISIBSCBS, Item.Imposto.IBSCBS);
+         End;
+
          ADTO.AdicionarItem(Item);
-         LQuery.Next;
+
+         LQueryItens.Next;
       End;
+
    Finally
-      LQuery.Free;
+      LQueryISIBSCBS.Free;
+      LQueryItens.Free;
    End;
 End;
 
@@ -894,54 +941,6 @@ Begin
    End;
 End;
 
-Class Procedure TNFeMapper.MapearIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO);
-Begin
-   ADTO.CST := S(ADataSet, 'CST_UB13');
-   ADTO.cClassTrib := S(ADataSet, 'CCLASSTRIB_UB14');
-   ADTO.indDoacao := I(ADataSet, 'INDDOACAO_UB14A');
-   ADTO.vBC := D(ADataSet, 'VBC_UB16');
-
-   { UB17 } ADTO.gIBSUF := MapearGIBSUF(ADataSet);
-   { UB36 } ADTO.gIBSMun := MapearGIBSMun(ADataSet);
-   { UB55 } ADTO.gCBS := MapearGCBS(ADataSet);
-   { UB66a } ADTO.gCBS.gALCZFMCBS := MapearGCBSGALCZFMCBS(ADataSet);
-   { UB68 } ADTO.gTribRegular := MapearIBSCBSGTribRegular(ADataSet);
-   { UB82a } ADTO.gTribCompraGov := MapearIBSCBSTribCompraGov(ADataSet);
-
-   { IBS-MonoAdRem }
-   { UB86 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao := MapearGIBSMonoAdRemPadrao(ADataSet);
-   { UB87 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten := MapearGIBSMonoAdRemReten(ADataSet);
-   { UB88 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoRet := MapearGIBSMonoAdRemRet(ADataSet);
-   { UB89 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca := MapearGIBSMonoAdRemBioDiferenca(ADataSet);
-
-   { IBS-MonoAdValorem }
-   { UB91 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao := MapearGIBSMonoAdValoremPadrao(ADataSet);
-   { UB92 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten := MapearGIBSMonoAdValoremReten(ADataSet);
-   { UB93 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoRet := MapearGIBSMonoAdValoremRet(ADataSet);
-   { UB94 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca := MapearGIBSMonoAdValoremBioDiferenca(ADataSet);
-
-   { CBS-MonoAdRem }
-   { UB96 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao := MapearGCBSMonoAdRemPadrao(ADataSet);
-   { UB97 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten := MapearGCBSMonoAdRemReten(ADataSet);
-   { UB98 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoRet := MapearGCBSMonoAdRemRet(ADataSet);
-   { UB99 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca := MapearGCBSMonoAdRemBioDiferenca(ADataSet);
-
-   { CBS-MonoAdValorem }
-   { UB101 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao := MapearGCBSMonoAdValoremPadrao(ADataSet);
-   { UB102 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten := MapearGCBSMonoAdValoremReten(ADataSet);
-   { UB103 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoRet := MapearGCBSMonoAdValoremRet(ADataSet);
-   { UB104 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca := MapearGCBSMonoAdValoremBioDiferenca(ADataSet);
-
-   { Totais-Mono }
-   { UB105 } ADTO.gIBSCBSMono := MapearGIBSCBSMono(ADataSet);
-
-   { UB106 } MapearTransfCred(ADataSet, ADTO.gTransfCred);
-   { UB112 } MapearAjusteCompet(ADataSet, ADTO.gAjusteCompet);
-   { UB116 } MapearEstornoCred(ADataSet, ADTO.gEstornoCred);
-   { UB120 } MapearCredPresOper(ADataSet, ADTO.gCredPresOper);
-   { UB131 } MapearCredPresIBSZFM(ADataSet, ADTO.gCredPresIBSZFM);
-End;
-
 Class Function TNFeMapper.MapearGCBS(ADataSet: TDataSet): TNFeCBSDTO;
 Begin
    Result := TNFeCBSDTO.Create;
@@ -960,8 +959,8 @@ Begin
    Result := TNFeALCZFMCBS.Create;
    Result.tpALCZFMCBS := I(ADataSet, 'TPALCZFMCBS_UB66B');
    Result.nProcSuframa := S(ADataSet, 'NPROCSUFRAMA_UB66C');
-   Result.pAliqEfetRegCBS := I(ADataSet, 'PALIQEFETREGCBS_UB66D');
-   Result.vTribRegCBS := I(ADataSet, 'VTRIBREGCBS_UB66E');
+   Result.pAliqEfetRegCBS := D(ADataSet, 'PALIQEFETREGCBS_UB66D');
+   Result.vTribRegCBS := D(ADataSet, 'VTRIBREGCBS_UB66E');
 End;
 
 Class Function TNFeMapper.MapearIBSCBSGTribRegular(ADataSet: TDataSet): TNFeTribRegularDTO;
@@ -1094,6 +1093,62 @@ Begin
    ADTO.uTrib := S(ADataSet, 'UTRIB_UB09');
    ADTO.qTrib := D(ADataSet, 'QTRIB_UB10');
    ADTO.vIS := D(ADataSet, 'VIS_UB11');
+End;
+
+Class Procedure TNFeMapper.MapearIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO);
+Begin
+   { UB12 - IBS/CBS }
+   { UB17 } ADTO.gIBSUF := MapearGIBSUF(ADataSet);
+   { UB36 } ADTO.gIBSMun := MapearGIBSMun(ADataSet);
+   { UB55 } ADTO.gCBS := MapearGCBS(ADataSet);
+   { UB66a } ADTO.gCBS.gALCZFMCBS := MapearGCBSGALCZFMCBS(ADataSet);
+   { UB68 } ADTO.gTribRegular := MapearIBSCBSGTribRegular(ADataSet);
+   { UB82a } ADTO.gTribCompraGov := MapearIBSCBSTribCompraGov(ADataSet);
+
+   { IBS-MonoAdRem }
+   { UB86 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoPadrao := MapearGIBSMonoAdRemPadrao(ADataSet);
+   { UB87 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoReten := MapearGIBSMonoAdRemReten(ADataSet);
+   { UB88 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gMonoRet := MapearGIBSMonoAdRemRet(ADataSet);
+   { UB89 } ADTO.gIBSCBSMono.gIBSMonoAdRem.gpBioDiferenca := MapearGIBSMonoAdRemBioDiferenca(ADataSet);
+
+   { IBS-MonoAdValorem }
+   { UB91 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoPadrao := MapearGIBSMonoAdValoremPadrao(ADataSet);
+   { UB92 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoReten := MapearGIBSMonoAdValoremReten(ADataSet);
+   { UB93 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gMonoRet := MapearGIBSMonoAdValoremRet(ADataSet);
+   { UB94 } ADTO.gIBSCBSMono.gIBSMonoAdValorem.gpBioDiferenca := MapearGIBSMonoAdValoremBioDiferenca(ADataSet);
+
+   { CBS-MonoAdRem }
+   { UB96 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoPadrao := MapearGCBSMonoAdRemPadrao(ADataSet);
+   { UB97 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoReten := MapearGCBSMonoAdRemReten(ADataSet);
+   { UB98 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gMonoRet := MapearGCBSMonoAdRemRet(ADataSet);
+   { UB99 } ADTO.gIBSCBSMono.gCBSMonoAdRem.gpBioDiferenca := MapearGCBSMonoAdRemBioDiferenca(ADataSet);
+
+   { CBS-MonoAdValorem }
+   { UB101 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoPadrao := MapearGCBSMonoAdValoremPadrao(ADataSet);
+   { UB102 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoReten := MapearGCBSMonoAdValoremReten(ADataSet);
+   { UB103 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gMonoRet := MapearGCBSMonoAdValoremRet(ADataSet);
+   { UB104 } ADTO.gIBSCBSMono.gCBSMonoAdValorem.gpBioDiferenca := MapearGCBSMonoAdValoremBioDiferenca(ADataSet);
+
+   { Totais-Mono }
+   { UB105 } ADTO.gIBSCBSMono := MapearGIBSCBSMono(ADataSet);
+
+   { UB106 } MapearTransfCred(ADataSet, ADTO.gTransfCred);
+   { UB112 } MapearAjusteCompet(ADataSet, ADTO.gAjusteCompet);
+   { UB116 } MapearEstornoCred(ADataSet, ADTO.gEstornoCred);
+   { UB120 } MapearCredPresOper(ADataSet, ADTO.gCredPresOper);
+   { UB131 } MapearCredPresIBSZFM(ADataSet, ADTO.gCredPresIBSZFM);
+End;
+
+Class Procedure TNFeMapper.MapearISIBSCBS(ADataSet: TDataSet; ADTO: TNFeIBSCBSDTO);
+Begin
+
+   ADTO.CST := S(ADataSet, 'CST_UB13');
+   ADTO.cClassTrib := S(ADataSet, 'CCLASSTRIB_UB14');
+   ADTO.indDoacao := I(ADataSet, 'INDDOACAO_UB14A');
+   ADTO.vBC := D(ADataSet, 'VBC_UB16');
+
+   { UB01 } MapearIS(ADataSet, ADTO.gIs);
+   { UB12 } MapearIBSCBS(ADataSet, ADTO);
 End;
 
 Class Function TNFeMapper.MapearGIBSMonoAdValoremRet(ADataSet: TDataSet): TNFeIBSMonoAdValoremRetDTO;

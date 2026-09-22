@@ -35,18 +35,20 @@ Begin
       If Assigned(ADTO.gIBSMun) Then
          subGrupoIBSCBS.AddPair('gIBSMun', TNFeIBSJsonBuilder.BuildIBSMun(ADTO.gIBSMun));
 
-      If Assigned(ADTO.gIBSCBSMono) Then
-         subGrupoIBSCBS.AddPair('gMono', TNFeIBSCBSMonoJsonBuilder.Build(ADTO.gIBSCBSMono));
-
       If Assigned(ADTO.gCBS) Then
          subGrupoIBSCBS.AddPair('gCBS', TNFeCBSJsonBuilder.Build(ADTO.gCBS));
+
+      If Assigned(ADTO.gTribCompraGov) Then
+         subGrupoIBSCBS.AddPair('gTribCompraGov', TNFeCBSJsonBuilder.Build(ADTO.gcBS));
+
+      If Assigned(ADTO.gTribRegular) Then
+         subGrupoIBSCBS.AddPair('gTribRegular', TNFeCBSJsonBuilder.Build(ADTO.gcBS));
+
+      If Assigned(ADTO.gIBSCBSMono) Then
+         subGrupoIBSCBS.AddPair('gIBSCBSMono', TNFeIBSCBSMonoJsonBuilder.Build(ADTO.gIBSCBSMono));
+
    Finally
       //
-      {
-      FgIBS: TNFeIBSTotDTO;
-      FgCBS: TNFeCBSTotDTO;
-      FgMono: TNFeMonoTotDTO;
-      }
    End;
 
    grupoIBSCBS := TJSONObject.Create;
@@ -57,8 +59,7 @@ Begin
       grupoIBSCBS.AddPair('vIBS', TJSONNumber.Create(ADTO.vIBS));
       grupoIBSCBS.AddPair('vBC', TJSONNumber.Create(ADTO.vBC));
       grupoIBSCBS.AddPair('gIBSCBS', subGrupoIBSCBS);
-
-      Result.AddPair('IBSCBS', grupoIBSCBS);
+      Result:= grupoIBSCBS;
    Finally
       //
    End;

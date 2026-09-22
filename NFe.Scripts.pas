@@ -24,7 +24,6 @@ Type
       Class Function ScriptReboque(Const IdNFe: Integer): String;
       Class Function ScriptVolumes(Const IdNFe: Integer): String;
       Class Function ScriptLacres(Const IdNFe, Volume: Integer): String;
-      Class Function ScriptISIBSCBS(Const IdNFe: Integer): String;
       Class Function ScriptInfoAdicional(Const IdNFe: Integer): String;
       Class Function ScriptInfoContrib(Const IdNFe: Integer): String;
       Class Function ScriptInfoFisco(Const IdNFe: Integer): String;
@@ -33,6 +32,7 @@ Type
       Class Function ScriptTotaisISIBSCBS(Const IdNFe: Integer): String; // W03
 
       // IMPLEMENTAR
+      Class Function ScriptISIBSCBS(Const IdNFe: Integer): String;
       { IMPLEMENTAR } Class Function ScriptPagamentoAntecipado(Const IdNFe: Integer): String;
       { IMPLEMENTAR } Class Function ScriptCompraGov(Const IdNFe: Integer): String;
    Private
@@ -396,11 +396,10 @@ Class Function TNFeScript.ScriptTotaisISIBSCBS(Const IdNFe: Integer): String;
 Begin
    { IMPLEMENTAR->vCredPresCondSus_W56B }
    Result := Format(
-      'VIS_W33, VBCIBSCBS_W35, VDIF_W38, VDEVTRIB_W39, VIBSUF_W41, VDIF_W43, VDEVTRIB_W44, VIBSMUN_W46, ' +
+      'SELECT VIS_W33, VBCIBSCBS_W35, VDIF_W38, VDEVTRIB_W39, VIBSUF_W41, VDIF_W43, VDEVTRIB_W44, VIBSMUN_W46, ' +
       'VIBS_W47, VCREDPRES_W48, VCREDPRESCONDSUS_W49, VDIF_W53, VDEVTRIB_W54, VCBS_W56, VCREDPRES_W56A, VIBSMONO_W58, ' +
       'VCBSMONO_W59, VIBSMONORETEN_W59A, VCBSMONORETEN_W59B, VIBSMONORET_W59C, VCBSMONORET_W59D, VIBSESTCRED_W59F, ' +
-      'VCBSESTCRED_W59G, VNFTOT_W60, ' +
-      'EXPORTA_SPED, ERRO_NSEG ' +
+      'VCBSESTCRED_W59G, VNFTOT_W60 ' +
       'FROM NFE ' +
       'WHERE ID_NFE = %d', [IdNFe]);
 End;

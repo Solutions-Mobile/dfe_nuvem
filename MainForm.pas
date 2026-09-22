@@ -72,6 +72,7 @@ Begin
          LJSON := TNFeJsonBuilder.Build(NFeDTO);
          Try
             MemoJSON.Text := TUtils.FormatarJSON(LJSON.ToString);
+            //MemoJSON.Text := LJSON.ToJSON;
          Finally
             LJSON.Free;
          End;

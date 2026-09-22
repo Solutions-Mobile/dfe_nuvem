@@ -27,7 +27,8 @@ Begin
    Result.AddPair('pCBS', TJSONNumber.Create(ADTO.pCBS));
    Result.AddPair('vCBS', TJSONNumber.Create(ADTO.vCBS));
 
-   If (ADTO.vDif > 0) Then
+   // If (ADTO.vDif > 0) Then
+   If (True) Then
    Begin
       gDif := TJSONObject.Create;
       Try
@@ -39,7 +40,8 @@ Begin
       End;
    End;
 
-   If (ADTO.pRedAliq > 0) Then
+   // If (ADTO.pRedAliq > 0) Then
+   If (True) Then
    Begin
       gRed := TJSONObject.Create;
       Try
@@ -51,7 +53,8 @@ Begin
       End;
    End;
 
-   If (ADTO.vDevTrib > 0) Then
+   // If (ADTO.vDevTrib > 0) Then
+   If (True) Then
    Begin
       gDevTrib := TJSONObject.Create;
       Try
@@ -63,14 +66,14 @@ Begin
       End;
    End;
 
-   If (ADTO.gALCZFMCBS.vTribRegCBS > 0) Then
+   // If (ADTO.gALCZFMCBS.vTribRegCBS > 0) Then
+   If (True) Then
    Begin
       gALCZFMCBS := TJSONObject.Create;
       Try
-         gALCZFMCBS.AddPair('tpALCZFMCBS', TJSONNumber.Create(ADTO.gALCZFMCBS.tpALCZFMCBS));
+         //gALCZFMCBS.AddPair('tpALCZFMCBS', TJSONNumber.Create(ADTO.gALCZFMCBS.tpALCZFMCBS));
          gALCZFMCBS.AddPair('nProcSuframa', ADTO.gALCZFMCBS.nProcSuframa);
          gALCZFMCBS.AddPair('pAliqEfetRegCBS', TJSONNumber.Create(ADTO.gALCZFMCBS.pAliqEfetRegCBS));
-         gALCZFMCBS.AddPair('nProcSuframa', TJSONNumber.Create(ADTO.gALCZFMCBS.nProcSuframa));
          Result.AddPair('gALCZFMCBS', gALCZFMCBS);
       Finally
          //

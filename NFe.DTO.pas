@@ -1333,6 +1333,8 @@ Type
    Private
       FISSQN: TNFeISSQNDTO;
    Public
+      Constructor Create;
+      Destructor Destroy; Override;
       Property ISSQN: TNFeISSQNDTO Read FISSQN Write FISSQN;
    End;
 
@@ -1943,7 +1945,6 @@ Constructor TNFeIBSCBSDTO.Create;
 Begin
    FgIBSUF := TNFeIBSUFDTO.Create;
    FgIBSMun := TNFeIBSMunDTO.Create;
-   FgTribCompraGov := TNFeTribCompraGov.Create;
    FgCBS := TNFeCBSDTO.Create;
    FgIBSCBSMono := TNFeIBSCBSMonoDTO.Create;
    FgTribRegular := TNFeTribRegularDTO.Create;
@@ -1963,14 +1964,12 @@ Begin
    FgEstornoCred.Free;
    FgCredPresOper.Free;
    FgCredPresIBSZFM.Free;
-
    FgIBSUF.Free;
    FgIBSMun.Free;
    FgTribCompraGov.Free;
    FgCBS.Free;
    FgIBSCBSMono.Free;
    FgTribRegular.Free;
-   FgTribCompraGov.Free;
    FgIS.Free;
    Inherited;
 End;
@@ -2145,7 +2144,6 @@ End;
 
 Constructor TNFeIBSCBSMonoDTO.Create;
 Begin
-   // Inherited Create;
    FgIBSMonoAdRem := TNFeIBSMonoAdRemDTO.Create;
    FgIBSMonoAdValorem := TNFeIBSMonoAdValoremDTO.Create;
    FgCBSMonoAdRem := TNFeCBSMonoAdRemDTO.Create;
@@ -2166,7 +2164,10 @@ End;
 
 Constructor TNFeIBSMonoAdRemDTO.Create;
 Begin
-   Inherited Create;
+   FgMonoPadrao := TNFeIBSMonoAdRemPadraoDTO.Create;
+   FgMonoReten := TNFeIBSMonoAdRemRetenDTO.Create;
+   FgMonoRet := TNFeIBSMonoAdRemRetDTO.Create;
+   FgpBioDiferenca := TNFeIBSMonoAdRemBioDiferencaDTO.Create;
 End;
 
 Destructor TNFeIBSMonoAdRemDTO.Destroy;
@@ -2183,7 +2184,10 @@ End;
 
 Constructor TNFeIBSMonoAdValoremDTO.Create;
 Begin
-   Inherited Create;
+   FgMonoPadrao := TNFeIBSMonoAdValoremPadraoDTO.Create;
+   FgMonoReten := TNFeIBSMonoAdValoremRetenDTO.Create;
+   FgMonoRet := TNFeIBSMonoAdValoremRetDTO.Create;
+   FgpBioDiferenca := TNFeIBSMonoAdValoremBioDiferencaDTO.Create;
 End;
 
 Destructor TNFeIBSMonoAdValoremDTO.Destroy;
@@ -2192,7 +2196,6 @@ Begin
    FgMonoReten.Free;
    FgMonoRet.Free;
    FgpBioDiferenca.Free;
-
    Inherited;
 End;
 
@@ -2200,7 +2203,10 @@ End;
 
 Constructor TNFeCBSMonoAdRemDTO.Create;
 Begin
-   Inherited Create;
+   FgMonoPadrao := TNFeCBSMonoAdRemPadraoDTO.Create;
+   FgMonoReten := TNFeCBSMonoAdRemRetenDTO.Create;
+   FgMonoRet := TNFeCBSMonoAdRemRetDTO.Create;
+   FgpBioDiferenca := TNFeCBSMonoAdRemBioDiferencaDTO.Create;
 End;
 
 Destructor TNFeCBSMonoAdRemDTO.Destroy;
@@ -2217,7 +2223,10 @@ End;
 
 Constructor TNFeCBSMonoAdValoremDTO.Create;
 Begin
-   Inherited Create;
+   FgMonoPadrao := TNFeCBSMonoAdValoremPadraoDTO.Create;
+   FgMonoReten := TNFeCBSMonoAdValoremRetenDTO.Create;
+   FgMonoRet := TNFeCBSMonoAdValoremRetDTO.Create;
+   FgpBioDiferenca := TNFeCBSMonoAdValoremBioDiferencaDTO.Create;
 End;
 
 Destructor TNFeCBSMonoAdValoremDTO.Destroy;
@@ -2236,10 +2245,12 @@ Begin
    FgIBS := TNFeIBSTotDTO.Create;
    FgCBS := TNFeCBSTotDTO.Create;
    FgMono := TNFeMonoTotDTO.Create;
+   FgEstornoCred := TNFeEstornoCredTot.Create;
 End;
 
 Destructor TNFeIBSCBSTotDTO.Destroy;
 Begin
+   FgEstornoCred.Free;
    FgMono.Free;
    FgCBS.Free;
    FgIBS.Free;
@@ -2281,8 +2292,6 @@ End;
 
 Constructor TNFeCredPresOperDTO.Create;
 Begin
-   Inherited Create;
-
    FgIBSCredPres := TNFeIBSCredPresDTO.Create;
    FgCBSCredPres := TNFeCBSCredPresDTO.Create;
 End;
@@ -2292,6 +2301,20 @@ Begin
    FgIBSCredPres.Free;
    FgCBSCredPres.Free;
 
+   Inherited;
+End;
+
+{ TNFeISSQNTotDTO }
+
+Constructor TNFeISSQNTotDTO.Create;
+Begin
+   FISSQN := TNFeISSQNDTO.Create;
+End;
+
+Destructor TNFeISSQNTotDTO.Destroy;
+Begin
+
+   FISSQN.Free;
    Inherited;
 End;
 

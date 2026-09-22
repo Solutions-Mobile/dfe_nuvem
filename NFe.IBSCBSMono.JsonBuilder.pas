@@ -39,20 +39,20 @@ Class Function TNFeIBSCBSMonoJsonBuilder.Build(ADTO: TNFeIBSCBSMonoDTO): TJSONOb
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
-   If Assigned(ADTO.gIBSMonoAdRem) Then
-      Result.AddPair('gIBSMonoAdRem', BuildIBSMonoAdRem(ADTO.gIBSMonoAdRem));
+   // If Assigned(ADTO.gIBSMonoAdRem) Then
+   Result.AddPair('gIBSMonoAdRem', BuildIBSMonoAdRem(ADTO.gIBSMonoAdRem));
 
-   If Assigned(ADTO.gIBSMonoAdValorem) Then
-      Result.AddPair('gIBSMonoAdValorem', BuildIBSMonoAdValorem(ADTO.gIBSMonoAdValorem));
+   // If Assigned(ADTO.gIBSMonoAdValorem) Then
+   Result.AddPair('gIBSMonoAdValorem', BuildIBSMonoAdValorem(ADTO.gIBSMonoAdValorem));
 
-   If Assigned(ADTO.gCBSMonoAdRem) Then
-      Result.AddPair('gCBSMonoAdRem', BuildCBSMonoAdRem(ADTO.gCBSMonoAdRem));
+   // If Assigned(ADTO.gCBSMonoAdRem) Then
+   Result.AddPair('gCBSMonoAdRem', BuildCBSMonoAdRem(ADTO.gCBSMonoAdRem));
 
-   If Assigned(ADTO.gCBSMonoAdValorem) Then
-      Result.AddPair('gCBSMonoAdValorem', BuildCBSMonoAdValorem(ADTO.gCBSMonoAdValorem));
+   // If Assigned(ADTO.gCBSMonoAdValorem) Then
+   Result.AddPair('gCBSMonoAdValorem', BuildCBSMonoAdValorem(ADTO.gCBSMonoAdValorem));
 
    Result.AddPair('vTotIBSMonoItem', TJSONNumber.Create(ADTO.vTotIBSMonoItem));
    Result.AddPair('vTotCBSMonoItem', TJSONNumber.Create(ADTO.vTotCBSMonoItem));
@@ -62,28 +62,28 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdRem(ADTO: TNFeIBSMonoAdRe
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
-   If Assigned(ADTO.gMonoPadrao) Then
-      Result.AddPair('gMonoPadrao', BuildIBSMonoAdRemPadrao(ADTO.gMonoPadrao));
+   /// If Assigned(ADTO.gMonoPadrao) Then
+   Result.AddPair('gMonoPadrao', BuildIBSMonoAdRemPadrao(ADTO.gMonoPadrao));
 
-   If Assigned(ADTO.gMonoReten) Then
-      Result.AddPair('gMonoReten', BuildIBSMonoAdRemReten(ADTO.gMonoReten));
+   // If Assigned(ADTO.gMonoReten) Then
+   Result.AddPair('gMonoReten', BuildIBSMonoAdRemReten(ADTO.gMonoReten));
 
-   If Assigned(ADTO.gMonoRet) Then
-      Result.AddPair('gMonoRet', BuildIBSMonoAdRemRet(ADTO.gMonoRet));
+   // If Assigned(ADTO.gMonoRet) Then
+   Result.AddPair('gMonoRet', BuildIBSMonoAdRemRet(ADTO.gMonoRet));
 
-   If Assigned(ADTO.gpBioDiferenca) Then
-      Result.AddPair('gpBioDiferenca', BuildIBSMonoAdRemBioDiferenca(ADTO.gpBioDiferenca));
+   // If Assigned(ADTO.gpBioDiferenca) Then
+   Result.AddPair('gpBioDiferenca', BuildIBSMonoAdRemBioDiferenca(ADTO.gpBioDiferenca));
 End;
 
 Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdRemPadrao(ADTO: TNFeIBSMonoAdRemPadraoDTO): TJSONObject;
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCMono', TJSONNumber.Create(ADTO.qBCMono));
    Result.AddPair('adRemIBS', TJSONNumber.Create(ADTO.adRemIBS));
@@ -94,8 +94,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdRemReten(ADTO: TNFeIBSMon
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCMonoReten', TJSONNumber.Create(ADTO.qBCMonoReten));
    Result.AddPair('adRemIBSReten', TJSONNumber.Create(ADTO.adRemIBSReten));
@@ -106,8 +106,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdRemRet(ADTO: TNFeIBSMonoA
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vIBSMonoRet', TJSONNumber.Create(ADTO.vIBSMonoRet));
 End;
@@ -116,8 +116,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdRemBioDiferenca(ADTO: TNF
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCBioComb', TJSONNumber.Create(ADTO.qBCBioComb));
    Result.AddPair('vIBSDiferenca', TJSONNumber.Create(ADTO.vIBSDiferenca));
@@ -127,28 +127,28 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdValorem(ADTO: TNFeIBSMono
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
-   If Assigned(ADTO.gMonoPadrao) Then
-      Result.AddPair('gMonoPadrao', BuildIBSMonoAdValoremPadrao(ADTO.gMonoPadrao));
+   // If Assigned(ADTO.gMonoPadrao) Then
+   Result.AddPair('gMonoPadrao', BuildIBSMonoAdValoremPadrao(ADTO.gMonoPadrao));
 
-   If Assigned(ADTO.gMonoReten) Then
-      Result.AddPair('gMonoReten', BuildIBSMonoAdValoremReten(ADTO.gMonoReten));
+   // If Assigned(ADTO.gMonoReten) Then
+   Result.AddPair('gMonoReten', BuildIBSMonoAdValoremReten(ADTO.gMonoReten));
 
-   If Assigned(ADTO.gMonoRet) Then
-      Result.AddPair('gMonoRet', BuildIBSMonoAdValoremRet(ADTO.gMonoRet));
+   // If Assigned(ADTO.gMonoRet) Then
+   Result.AddPair('gMonoRet', BuildIBSMonoAdValoremRet(ADTO.gMonoRet));
 
-   If Assigned(ADTO.gpBioDiferenca) Then
-      Result.AddPair('gpBioDiferenca', BuildIBSMonoAdValoremBioDiferenca(ADTO.gpBioDiferenca));
+   // If Assigned(ADTO.gpBioDiferenca) Then
+   Result.AddPair('gpBioDiferenca', BuildIBSMonoAdValoremBioDiferenca(ADTO.gpBioDiferenca));
 End;
 
 Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdValoremPadrao(ADTO: TNFeIBSMonoAdValoremPadraoDTO): TJSONObject;
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vBCMono', TJSONNumber.Create(ADTO.vBCMono));
    Result.AddPair('pAliqMonoUF', TJSONNumber.Create(ADTO.pAliqMonoUF));
@@ -162,8 +162,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdValoremReten(ADTO: TNFeIB
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vBCMonoReten', TJSONNumber.Create(ADTO.vBCMonoReten));
    Result.AddPair('pAliqMonoReten', TJSONNumber.Create(ADTO.pAliqMonoReten));
@@ -174,8 +174,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdValoremRet(ADTO: TNFeIBSM
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vIBSMonoRet', TJSONNumber.Create(ADTO.vIBSMonoRet));
 End;
@@ -184,8 +184,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildIBSMonoAdValoremBioDiferenca(ADTO:
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCBioComb', TJSONNumber.Create(ADTO.qBCBioComb));
    Result.AddPair('vIBSDiferenca', TJSONNumber.Create(ADTO.vIBSDiferenca));
@@ -195,28 +195,28 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdRem(ADTO: TNFeCBSMonoAdRe
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
-   If Assigned(ADTO.gMonoPadrao) Then
-      Result.AddPair('gMonoPadrao', BuildCBSMonoAdRemPadrao(ADTO.gMonoPadrao));
+   // If Assigned(ADTO.gMonoPadrao) Then
+   Result.AddPair('gMonoPadrao', BuildCBSMonoAdRemPadrao(ADTO.gMonoPadrao));
 
-   If Assigned(ADTO.gMonoReten) Then
-      Result.AddPair('gMonoReten', BuildCBSMonoAdRemReten(ADTO.gMonoReten));
+   // If Assigned(ADTO.gMonoReten) Then
+   Result.AddPair('gMonoReten', BuildCBSMonoAdRemReten(ADTO.gMonoReten));
 
-   If Assigned(ADTO.gMonoRet) Then
-      Result.AddPair('gMonoRet', BuildCBSMonoAdRemRet(ADTO.gMonoRet));
+   // If Assigned(ADTO.gMonoRet) Then
+   Result.AddPair('gMonoRet', BuildCBSMonoAdRemRet(ADTO.gMonoRet));
 
-   If Assigned(ADTO.gpBioDiferenca) Then
-      Result.AddPair('gpBioDiferenca', BuildCBSMonoAdRemBioDiferenca(ADTO.gpBioDiferenca));
+   // If Assigned(ADTO.gpBioDiferenca) Then
+   Result.AddPair('gpBioDiferenca', BuildCBSMonoAdRemBioDiferenca(ADTO.gpBioDiferenca));
 End;
 
 Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdRemPadrao(ADTO: TNFeCBSMonoAdRemPadraoDTO): TJSONObject;
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCMono', TJSONNumber.Create(ADTO.qBCMono));
    Result.AddPair('adRemCBS', TJSONNumber.Create(ADTO.adRemCBS));
@@ -227,8 +227,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdRemReten(ADTO: TNFeCBSMon
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCMonoReten', TJSONNumber.Create(ADTO.qBCMonoReten));
    Result.AddPair('adRemCBSReten', TJSONNumber.Create(ADTO.adRemCBSReten));
@@ -239,8 +239,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdRemRet(ADTO: TNFeCBSMonoA
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vCBSMonoRet', TJSONNumber.Create(ADTO.vCBSMonoRet));
 End;
@@ -249,8 +249,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdRemBioDiferenca(ADTO: TNF
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCBioComb', TJSONNumber.Create(ADTO.qBCBioComb));
    Result.AddPair('vCBSDiferenca', TJSONNumber.Create(ADTO.vCBSDiferenca));
@@ -260,28 +260,28 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdValorem(ADTO: TNFeCBSMono
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
-   If Assigned(ADTO.gMonoPadrao) Then
-      Result.AddPair('gMonoPadrao', BuildCBSMonoAdValoremPadrao(ADTO.gMonoPadrao));
+   // If Assigned(ADTO.gMonoPadrao) Then
+   Result.AddPair('gMonoPadrao', BuildCBSMonoAdValoremPadrao(ADTO.gMonoPadrao));
 
-   If Assigned(ADTO.gMonoReten) Then
-      Result.AddPair('gMonoReten', BuildCBSMonoAdValoremReten(ADTO.gMonoReten));
+   // If Assigned(ADTO.gMonoReten) Then
+   Result.AddPair('gMonoReten', BuildCBSMonoAdValoremReten(ADTO.gMonoReten));
 
-   If Assigned(ADTO.gMonoRet) Then
-      Result.AddPair('gMonoRet', BuildCBSMonoAdValoremRet(ADTO.gMonoRet));
+   // If Assigned(ADTO.gMonoRet) Then
+   Result.AddPair('gMonoRet', BuildCBSMonoAdValoremRet(ADTO.gMonoRet));
 
-   If Assigned(ADTO.gpBioDiferenca) Then
-      Result.AddPair('gpBioDiferenca', BuildCBSMonoAdValoremBioDiferenca(ADTO.gpBioDiferenca));
+   // If Assigned(ADTO.gpBioDiferenca) Then
+   Result.AddPair('gpBioDiferenca', BuildCBSMonoAdValoremBioDiferenca(ADTO.gpBioDiferenca));
 End;
 
 Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdValoremPadrao(ADTO: TNFeCBSMonoAdValoremPadraoDTO): TJSONObject;
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vBCMono', TJSONNumber.Create(ADTO.vBCMono));
    Result.AddPair('pAliqMonoCBS', TJSONNumber.Create(ADTO.pAliqMonoCBS));
@@ -292,8 +292,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdValoremReten(ADTO: TNFeCB
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('vBCMonoReten', TJSONNumber.Create(ADTO.vBCMonoReten));
    Result.AddPair('pAliqMonoReten', TJSONNumber.Create(ADTO.pAliqMonoReten));
@@ -304,8 +304,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdValoremRet(ADTO: TNFeCBSM
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   Exit;
 
    Result.AddPair('vCBSMonoRet', TJSONNumber.Create(ADTO.vCBSMonoRet));
 End;
@@ -314,8 +314,8 @@ Class Function TNFeIBSCBSMonoJsonBuilder.BuildCBSMonoAdValoremBioDiferenca(ADTO:
 Begin
    Result := TJSONObject.Create;
 
-   If Not Assigned(ADTO) Then
-      Exit;
+   // If Not Assigned(ADTO) Then
+   // Exit;
 
    Result.AddPair('qBCBioComb', TJSONNumber.Create(ADTO.qBCBioComb));
    Result.AddPair('vCBSDiferenca', TJSONNumber.Create(ADTO.vCBSDiferenca));

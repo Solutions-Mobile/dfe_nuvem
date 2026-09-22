@@ -28,7 +28,8 @@ Begin
    Result.AddPair('pIBSUF', TJSONNumber.Create(ADTO.pIBSUF));
    Result.AddPair('vIBSUF', TJSONNumber.Create(ADTO.vIBSUF));
 
-   If (ADTO.vDif > 0) Then
+   // If (ADTO.vDif > 0) Then
+   If (True) Then
    Begin
       gDif := TJSONObject.Create;
       Try
@@ -40,7 +41,8 @@ Begin
       End;
    End;
 
-   If (ADTO.pRedAliq > 0) Then
+   // If (ADTO.pRedAliq > 0) Then
+   If (True) Then
    Begin
       gRed := TJSONObject.Create;
       Try
@@ -52,7 +54,8 @@ Begin
       End;
    End;
 
-   If (ADTO.vDevTrib > 0) Then
+   // If (ADTO.vDevTrib > 0) Then
+   If (True) Then
    Begin
       gDevTrib := TJSONObject.Create;
       Try
@@ -77,7 +80,8 @@ Begin
    Result.AddPair('pIBSMun', TJSONNumber.Create(ADTO.pIBSMun));
    Result.AddPair('vIBSMun', TJSONNumber.Create(ADTO.vIBSMun));
 
-   If (ADTO.vDif > 0) Then
+   // If (ADTO.vDif > 0) Then
+   If (True) Then
    Begin
       gDif := TJSONObject.Create;
       Try
@@ -89,7 +93,8 @@ Begin
       End;
    End;
 
-   If (ADTO.pRedAliq > 0) Then
+   // If (ADTO.pRedAliq > 0) Then
+   If (True) Then
    Begin
       gRed := TJSONObject.Create;
       Try
@@ -101,7 +106,8 @@ Begin
       End;
    End;
 
-   If (ADTO.vDevTrib > 0) Then
+   // If (ADTO.vDevTrib > 0) Then
+   If (True) Then
    Begin
       gDevTrib := TJSONObject.Create;
       Try

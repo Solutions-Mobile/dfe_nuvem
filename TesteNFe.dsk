@@ -1,28 +1,33 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas',0,1,185,47,191,0,0,,
-File_1=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas',0,1,2143,102,2160,0,0,{{389,0}
-File_2=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas',0,1,917,85,926,0,0,,
-File_3=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas',0,1,894,77,919,0,0,,
-File_4=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas',0,1,177,7,203,0,0,,
-File_5=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBS.JsonBuilder.pas',0,1,7,1,9,0,0,,
-File_6=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBSTot.JsonBuilder.pas',0,1,76,40,78,0,0,,
-File_7=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.TotalISIBSCBS.JsonBuilder.pas',0,1,1,62,27,0,0,,
-File_8=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ICMSTot.JsonBuilder.pas',0,1,1,59,16,0,0,,
-File_9=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQNTot.JsonBuilder.pas',0,1,1,1,17,0,0,,
-File_10=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Total.JsonBuilder.pas',0,1,16,79,32,0,0,,
-File_11=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.RetTribTot.JsonBuilder.pas',0,1,1,69,22,0,0,,
-File_12=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBS.JsonBuilder.pas',0,1,36,55,66,0,0,{{68,80}
-File_13=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Imposto.JsonBuilder.pas',0,1,1,113,7,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\source\rtl\common\System.JSON.pas',0,1,1268,1,1290,0,0,,
+File_1=TSourceModule,'C:\Componentes\mzsistemas\Core\API\API.Utils.pas',0,1,579,1,605,0,0,,
+File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\source\data\firedac\FireDAC.Phys.pas',0,1,6850,1,6876,0,0,,
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\21.0\SOURCE\RTL\SYS\System.pas',0,1,21653,1,21667,0,0,,
+File_4=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.GeraXML.ACBr.pas',0,1,2143,102,2160,0,0,{{389,0}
+File_5=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Mapper.pas',0,1,917,85,926,0,0,,
+File_6=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.DTO.pas',0,1,894,77,919,0,0,,
+File_7=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Scripts.pas',0,1,177,7,203,0,0,,
+File_8=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBS.JsonBuilder.pas',0,1,7,1,9,0,0,,
+File_9=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.IBSCBSTot.JsonBuilder.pas',0,1,76,40,78,0,0,,
+File_10=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.TotalISIBSCBS.JsonBuilder.pas',0,1,1,62,27,0,0,,
+File_11=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ICMSTot.JsonBuilder.pas',0,1,1,59,16,0,0,,
+File_12=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.ISSQNTot.JsonBuilder.pas',0,1,1,1,17,0,0,,
+File_13=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.Total.JsonBuilder.pas',0,1,16,79,32,0,0,,
+File_14=TSourceModule,'C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.RetTribTot.JsonBuilder.pas',0,1,1,69,22,0,0,,
 
 [Modules]
-Module0=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas
-Module1=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
-Module2=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
-Count=3
+Module0=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
+Module1=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
+Module2=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas
+Module3=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Imposto.JsonBuilder.pas
+Module4=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\MainForm.pas
+Module5=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\TesteNFe.dproj
+Module6=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.CBS.JsonBuilder.pas
+Module7=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
+Module8=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBS.JsonBuilder.pas
+Module9=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBSMono.JsonBuilder.pas
+Count=10
 EditWindowCount=1
-
-[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas]
-ModuleType=TSourceModule
 
 [C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas]
 ModuleType=TSourceModule
@@ -30,12 +35,43 @@ ModuleType=TSourceModule
 [C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas]
 ModuleType=TSourceModule
 
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Imposto.JsonBuilder.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\MainForm.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\TesteNFe.dproj]
+ModuleType=TBaseProject
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.CBS.JsonBuilder.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBS.JsonBuilder.pas]
+ModuleType=TSourceModule
+
+[C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBSMono.JsonBuilder.pas]
+ModuleType=TSourceModule
+
 [EditWindow0]
-ViewCount=3
-CurrentEditView=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas
+ViewCount=10
+CurrentEditView=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
 View0=0
 View1=1
 View2=2
+View3=3
+View4=4
+View5=5
+View6=6
+View7=7
+View8=8
+View9=9
 PercentageSizes=1
 Create=1
 Visible=1
@@ -53,12 +89,12 @@ DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
 LeftPanelSize=0
-RightPanelSize=2000
+RightPanelSize=0
 RightPanelClients=DockSite2,DockSite4
-RightPanelData=0000080001020100000009000000446F636B5369746534E40D0000000000000294220000000000000100000000E40D000009000000446F636B5369746532FFFFFFFF
-BottomPanelSize=0
+RightPanelData=0000080001020200000009000000446F636B536974653209000000446F636B5369746534E40D000000000000023F1C000000000000FFFFFFFF
+BottomPanelSize=1546
 BottomPanelClients=MessageView,DockSite1
-BottomPanelData=000008000102020000000F0000004D65737361676556696577466F726D09000000446F636B5369746531DE4400000000000002A50B0000000000000100000000DE4400000F0000004D65737361676556696577466F726DFFFFFFFF
+BottomPanelData=0000080001020100000009000000446F636B5369746531DE44000000000000020A060000000000000100000000DE4400000F0000004D65737361676556696577466F726DFFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E6756696577961D00000000000002F206000000000000FFFFFFFF
@@ -67,9 +103,9 @@ TabDockLeftClients=DockSite3=0,PropertyInspector=1
 [View0]
 CustomEditViewType=TEditView
 Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
-CursorX=31
-CursorY=105
-TopLine=84
+CursorX=89
+CursorY=1101
+TopLine=1087
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -77,23 +113,100 @@ EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Mapper.pas
 
 [View1]
 CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\TesteNFe.dpr
+CursorX=1
+CursorY=40
+TopLine=26
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\TesteNFe.dpr
+
+[View2]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.CBS.JsonBuilder.pas
+CursorX=80
+CursorY=80
+TopLine=53
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.CBS.JsonBuilder.pas
+
+[View3]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBS.JsonBuilder.pas
+CursorX=5
+CursorY=113
+TopLine=100
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBS.JsonBuilder.pas
+
+[View4]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\MainForm.pas
+CursorX=15
+CursorY=75
+TopLine=60
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\MainForm.pas
+
+[View5]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
+CursorX=106
+CursorY=203
+TopLine=188
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Scripts.pas
+
+[View6]
+CustomEditViewType=TEditView
 Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas
-CursorX=132
-CursorY=21
-TopLine=1
+CursorX=81
+CursorY=45
+TopLine=29
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBS.JsonBuilder.pas
 
-[View2]
+[View7]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBSMono.JsonBuilder.pas
+CursorX=54
+CursorY=38
+TopLine=37
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.IBSCBSMono.JsonBuilder.pas
+
+[View8]
+CustomEditViewType=TEditView
+Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Imposto.JsonBuilder.pas
+CursorX=94
+CursorY=30
+TopLine=19
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.Imposto.JsonBuilder.pas
+
+[View9]
 CustomEditViewType=TEditView
 Module=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
-CursorX=26
-CursorY=759
+CursorX=94
+CursorY=766
 TopLine=758
 LeftCol=1
-Elisions={{1191,40},{1196,7},{''}}{{1198,39},{1202,7},{''}}{{1219,39},{1224,7},{''}}{{1226,39},{1231,7},{''}}
+Elisions=
 Bookmarks=
 EditViewName=C:\Desenvolvimento\_Fiscal\MZ_DFe_Nuvem\NFe.DTO.pas
 
@@ -111,21 +224,18 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=213
 LRDockWidth=13604
 Dockable=1
 StayOnTop=0
 
 [Breakpoints]
-Count=3
-Breakpoint0='C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.PIS.JsonBuilder.pas',65,'',0,1,'',1,0,0,'',1,'','','',0,''
-Breakpoint1='C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.COFINS.JsonBuilder.pas',45,'',0,1,'',1,0,0,'',1,'','','',0,''
-Breakpoint2='C:\Desenvolvimento\_Fiscal\MZ-DFe em Nuvem\NFe.COFINS.JsonBuilder.pas',65,'',0,1,'',1,0,0,'',1,'','','',0,''
+Count=0
 
 [EmbarcaderoWin32Debugger_AddressBreakpoints]
 Count=0
@@ -177,11 +287,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8721
+Height=7025
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8721
+ClientHeight=7025
 TBDockHeight=5901
 LRDockWidth=2349
 Dockable=1
@@ -190,18 +300,18 @@ StayOnTop=0
 [MessageView]
 PercentageSizes=1
 Create=1
-Visible=0
+Visible=1
 Docked=1
 State=0
 Left=0
 Top=28
 Width=9917
-Height=2849
+Height=1347
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=9917
-ClientHeight=2849
-TBDockHeight=2849
+ClientHeight=1347
+TBDockHeight=1347
 LRDockWidth=2771
 Dockable=1
 StayOnTop=0
@@ -231,8 +341,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=68
+Left=117
+Top=446
 Width=1896
 Height=8779
 MaxLeft=-1
@@ -254,11 +364,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=3895
+Height=7025
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=3895
+ClientHeight=7025
 TBDockHeight=5959
 LRDockWidth=2516
 Dockable=1
@@ -270,8 +380,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=-1920
+Top=291
 Width=276
 Height=368
 MaxLeft=-1
@@ -295,11 +405,11 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=407
 LRDockWidth=4953
 Dockable=1
@@ -314,11 +424,11 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=213
 LRDockWidth=7411
 Dockable=1
@@ -327,6 +437,7 @@ Column0Width=145
 Column1Width=100
 Column2Width=115
 Column3Width=375
+Column4Width=10
 
 [LocalVarsWindow]
 PercentageSizes=1
@@ -337,11 +448,11 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=1541
 LRDockWidth=3484
 Dockable=1
@@ -356,11 +467,11 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=2064
 LRDockWidth=3484
 Dockable=1
@@ -375,11 +486,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1211
+Height=969
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1211
+ClientHeight=969
 TBDockHeight=2326
 LRDockWidth=2828
 Dockable=1
@@ -440,11 +551,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=3895
+Height=7025
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=3895
+ClientHeight=7025
 TBDockHeight=4884
 LRDockWidth=7146
 Dockable=1
@@ -456,8 +567,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=385
+Top=803
 Width=2854
 Height=3207
 MaxLeft=-1
@@ -475,8 +586,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-206
-Top=-405
+Left=-16
+Top=-39
 Width=1849
 Height=3149
 MaxLeft=-1
@@ -535,11 +646,11 @@ State=0
 Left=0
 Top=0
 Width=3828
-Height=1153
+Height=1076
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1153
+ClientHeight=1076
 TBDockHeight=1550
 LRDockWidth=8745
 Dockable=1
@@ -560,12 +671,12 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1896
-Height=8779
+Width=1812
+Height=8401
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1896
-ClientHeight=8779
+ClientWidth=1812
+ClientHeight=8401
 TBDockHeight=3672
 LRDockWidth=1896
 Dockable=1
@@ -580,11 +691,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=3895
+Height=7025
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=3895
+ClientHeight=7025
 TBDockHeight=4884
 LRDockWidth=5307
 Dockable=1
@@ -644,15 +755,15 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=8
-Top=8
+Left=952
+Top=28
 Width=3828
-Height=1424
+Height=1347
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=3828
-ClientHeight=1424
-TBDockHeight=1424
+ClientHeight=1347
+TBDockHeight=1347
 LRDockWidth=3828
 Dockable=1
 StayOnTop=0
@@ -665,18 +776,18 @@ HostDockSite=DockRightPanel
 DockSiteType=1
 PercentageSizes=1
 Create=1
-Visible=1
+Visible=0
 Docked=1
 State=0
 Left=0
 Top=28
 Width=2000
-Height=8992
+Height=7297
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8992
-TBDockHeight=8992
+ClientHeight=7297
+TBDockHeight=7297
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
@@ -693,13 +804,13 @@ Visible=0
 Docked=1
 State=0
 Left=8
-Top=68
+Top=8
 Width=1896
 Height=8779
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1896
-ClientHeight=8779
+ClientWidth=1812
+ClientHeight=8401
 TBDockHeight=8779
 LRDockWidth=1896
 Dockable=1
@@ -716,8 +827,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=494
+Left=8
+Top=8
 Width=2000
 Height=8779
 MaxLeft=-1
