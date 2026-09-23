@@ -112,6 +112,9 @@ Type
 
 Implementation
 
+uses
+  MZ.Biblioteca;
+
 { TNFeMapper }
 
 {$REGION 'Conversão de tipos'}
@@ -303,6 +306,7 @@ End;
 Class Procedure TNFeMapper.MapearInfoAdicional(AConnection: TFDConnection; AIdNFe: Integer; ADTO: TNFeDTO);
 Var
    LQuery: TFDQuery;
+   InfoComplementar: String;
 Begin
    LQuery := ExecutarQuery(AConnection, TNFeScript.ScriptInfoAdicional(AIdNFe));
 
@@ -312,7 +316,8 @@ Begin
       ADTO.InfoAdicional.infAdFisco := S(LQuery, 'INFADFISCO_Z02');
 
       // ADTO.InfoAdicional.infCpl := S(LQuery, 'INFCPL_Z03');
-      ADTO.InfoAdicional.infCpl := 'Pegar rotina TNFeGeraXMLACBr.GeraBloco_Z ';
+      InfoComplementar := TNFeScript.PrepararInfoComplementar(AConnection, AIdNFe);
+      ADTO.InfoAdicional.infCpl := InfoComplementar;
    Finally
       LQuery.Free;
    End;
@@ -428,7 +433,7 @@ Begin
    MapearCOFINS(ADataSet, ADTO.Imposto.COFINS);
    MapearISSQN(ADataSet, ADTO.Imposto.ISSQN);
 
-   //MapearIBSCBS(ADataSet, ADTO.Imposto.IBSCBS);
+   // MapearIBSCBS(ADataSet, ADTO.Imposto.IBSCBS);
 
    ADTO.prod.vTotTrib := D(ADataSet, 'VTOTTRIB_M02');
    ADTO.infAdProd := S(ADataSet, 'INFADPROD_V01');

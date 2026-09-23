@@ -3,7 +3,7 @@ Unit NFe.Scripts;
 Interface
 
 Uses
-   System.SysUtils;
+   System.SysUtils, System.Math, MZ.Biblioteca, FireDAC.Comp.Client;
 
 Type
    TTipoCobranca = (tcCobranca, tcDuplicata, tcPagamento, tcNone);
@@ -30,6 +30,12 @@ Type
 
       Class Function ScriptTotais(Const IdNFe: Integer): String; // W
       Class Function ScriptTotaisISIBSCBS(Const IdNFe: Integer): String; // W03
+      //
+      Class Function PrepararInfoComplementar(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+      Class Function PrepararInfoTributosIBPT(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+      Class Procedure PegarAliquotaTributosIBPT(Const Conexao: TFDConnection; IdNFe: Integer; NCM: String; Var AliqFed, AliqNac, AliqEst, AliqMun: Real; Versao: String);
+      Class Function PrepararInfoMotorista(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+      Class Function PrepararTotalCredSN(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
 
       // IMPLEMENTAR
       Class Function ScriptISIBSCBS(Const IdNFe: Integer): String;
@@ -72,7 +78,261 @@ Begin
       'CEP_E13, CPAIS_E14, XPAIS_E15, FONE_E16, INDIEDEST_E16A, IE_E17, ISUF_E18, IM_E18A, EMAIL_E19 ' +
       'FROM NFE ' +
       'WHERE ID_NFE = %d', [IdNFe]);
+End;
 
+Class Procedure TNFeScript.PegarAliquotaTributosIBPT(Const Conexao: TFDConnection; IdNFe: Integer; NCM: String; Var AliqFed, AliqNac, AliqEst, AliqMun: Real; Versao: String);
+Var
+   Script, sNCM: String;
+   qry: TFDQuery;
+Begin
+   NCM := TFuncoes.RetornaNumero(NCM, '');
+   sNCM := Copy(NCM, 1, 4) + '.' + Copy(NCM, 5, 2) + '.' + Copy(NCM, 7, 2);
+   sNCM := QuotedStr(sNCM);
+   Script := Format('SELECT ALIQNAC, ALIQFED, ALIQEST, ALIQMUN, CHAVEIBPT FROM PRODUTO_NCM WHERE PNC_A_NCM = %s', [sNCM]);
+
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := Script;
+      qry.Open;
+      AliqFed := qry.FieldByName('ALIQFED').AsFloat;
+      AliqNac := qry.FieldByName('ALIQNAC').AsFloat;
+      AliqEst := qry.FieldByName('ALIQEST').AsFloat;
+      AliqMun := qry.FieldByName('ALIQMUN').AsFloat;
+      Versao := qry.FieldByName('CHAVEIBPT').AsString;
+   Finally
+      qry.Free;
+   End;
+End;
+
+Class Function TNFeScript.PrepararInfoComplementar(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+Var
+   Script, InfoComplementar: String;
+   InfoIBPT, InfoMotorista, Infoimples: String;
+   qry: TFDQuery;
+Begin
+   Script := Format('SELECT ID_NFE, CRT_C21, FINNFE_B25, TPNF_B11, INFADFISCO_Z02, INFCPL_Z03 FROM NFE WHERE ID_NFE = %d', [IdNFe]);
+
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := Script;
+      qry.Open;
+
+      Result := qry.FieldByName('INFCPL_Z03').AsString;
+      If (Trim(Result) <> '') Then
+      Begin
+         Result := TFuncoes.RemoverCharControle(Result);
+         Result := Copy(Result, 1, 4000) + ', ';
+      End;
+
+      // MOSTRAR MENSAGEM DO SIMPLES
+      If ((qry.FieldByName('FINNFE_B25').AsString = '1') And (qry.FieldByName('TPNF_B11').AsString = '1') And (qry.FieldByName('CRT_C21').AsString <> '3'))
+      Then
+      Begin
+         Result := Result + 'I - "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL". ';
+         Result := Result + PrepararTotalCredSN(Conexao, IdNFe);
+      End;
+
+      // INFORMACAO TRIBUTOS
+      InfoIBPT := PrepararInfoTributosIBPT(Conexao, IdNFe);
+      Result := Result + InfoIBPT;
+
+      // INFORMACAO MOTORISTA
+      InfoMotorista := PrepararInfoTributosIBPT(Conexao, IdNFe);
+      Result := Result + InfoMotorista;
+   Finally
+      qry.Free;
+   End;
+End;
+
+Class Function TNFeScript.PrepararInfoMotorista(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+Var
+   Script, sMotorista, sPlaca, sKM: String;
+   qry: TFDQuery;
+Begin
+   sPlaca := '';
+   sMotorista := '';
+   sKM := '';
+   Script := Format(
+      'SELECT V.VCL_A_PLC, V.VND_A_MOT, V.VND_A_KM, V.VND_I_EMP ' +
+      'FROM NFE_VENDA NV ' +
+      'LEFT JOIN VENDA V ON((V.VND_I_COD = NV.VND_I_COD) AND (V.TER_I_COD = NV.TER_I_COD)) ' +
+      'LEFT JOIN NFE NF ON((NF.ID_NFE = NV.ID_NFE) AND (NF.ID_EMPRESA = V.VND_I_EMP)) ' +
+      'WHERE NV.ID_NFE = %d', [IdNFe]);
+
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := Script;
+      qry.Open;
+      qry.First;
+      sPlaca := qry.FieldByName('VCL_A_PLC').AsString;
+      sMotorista := qry.FieldByName('VND_A_MOT').AsString;
+      sKM := qry.FieldByName('VND_A_KM').AsString;
+   Finally
+      qry.Free
+   End;
+
+   If sMotorista <> ''
+   Then
+   Begin
+      sMotorista := ' Mot:' + sMotorista;
+   End;
+
+   If sPlaca <> ''
+   Then
+   Begin
+      sPlaca := ' Plc:' + sPlaca;
+   End;
+
+   If sKM <> ''
+   Then
+   Begin
+      sKM := ' KM:' + sKM;
+   End;
+
+   Result := sMotorista + sPlaca + sKM;
+End;
+
+Class Function TNFeScript.PrepararInfoTributosIBPT(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+Var
+   rVlrProd, rAliqFed, rAliqNac, rAliqEst, rAliqMun: Real;
+   rTotProd, rTotNac, rTotEst, rTotMun: Real;
+   sVersaoIBPT, sVersao, sInformacao, sNCM: String;
+   iQtd: Integer;
+   qry: TFDQuery;
+   Script: String;
+Begin
+   rVlrProd := 0;
+   rTotProd := 0;
+   rAliqNac := 0;
+   rAliqFed := 0;
+   rTotNac := 0;
+   rAliqEst := 0;
+   rTotEst := 0;
+   rAliqMun := 0;
+   rTotMun := 0;
+   sInformacao := '';
+   sNCM := '';
+   iQtd := 0;
+   sVersao := '';
+   sVersaoIBPT := '';
+
+   Script := Format('SELECT COUNT(*) FROM NFE WHERE TPNF_B11 = ''1'' AND FINNFE_B25 = ''1'' AND ID_NFE = %d', [IdNFe]);
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := Script;
+      qry.Open;
+
+      // VERIFICA SE É NECESSÁRIO CALCULAR TRIBUTOS (IBPT) - VENDA/NORMAL
+      // MARCOS - MOSTRAR INFORMAÇÃO DOS TRIBUTOS EM  TODAS AS SAÍDAS (MARCELO) - 26/10/2016
+      // MARCOS - MOSTRAR INFORMAÇÃO DOS TRIBUTOS EM  TODAS AS VENDAS - 23/05/2019
+      iQtd := qry.Fields[0].AsInteger;
+
+      If (iQtd > 1)
+      Then
+      Begin
+         qry.Close;
+         Script := Format('SELECT NCM_I05, VPROD_I11 FROM NFE_PROD WHERE ID_NFE = %d', [IdNFe]);
+         qry.SQL.Text := Script;
+         qry.Open;
+
+         While Not qry.Eof Do
+         Begin
+            sNCM := qry.FieldByName('NCM_I05').AsString;
+            rVlrProd := qry.FieldByName('VPROD_I11').AsFloat;
+            rTotProd := rTotProd + rVlrProd;
+
+            PegarAliquotaTributosIBPT(Conexao, IdNFe, sNCM, rAliqFed, rAliqNac, rAliqEst, rAliqMun, sVersaoIBPT);
+
+            If (Trim(sVersaoIBPT) <> '')
+            Then
+            Begin
+               sVersao := sVersaoIBPT;
+            End;
+            rTotNac := rTotNac + RoundTo(rVlrProd * (rAliqFed / 100), -2);
+            rTotEst := rTotEst + RoundTo(rVlrProd * (rAliqEst / 100), -2);
+            rTotMun := rTotMun + RoundTo(rVlrProd * (rAliqMun / 100), -2);
+            qry.Next;
+         End;
+         qry.Close;
+
+         rAliqNac := RoundTo((rTotNac / rTotProd) * 100, -2);
+         rAliqEst := RoundTo((rTotEst / rTotProd) * 100, -2);
+         rAliqMun := RoundTo((rTotMun / rTotProd) * 100, -2);
+
+         // MARCOS - 29/08/2019 - MOSTRAR TUDO MESMO COM VALORES = ZER0
+         sInformacao := 'Valor aprox.tributos ';
+         sInformacao := sInformacao + 'Fed-R$' + FormatFloat('###0.00', rTotNac) + '(' + FormatFloat('#0.00', rAliqNac) + '%), ';
+         sInformacao := sInformacao + 'Est-R$' + FormatFloat('###0.00', rTotEst) + '(' + FormatFloat('#0.00', rAliqEst) + '%), ';
+         sInformacao := sInformacao + 'Mun-R$' + FormatFloat('###0.00', rTotMun) + '(' + FormatFloat('#0.00', rAliqMun) + '%)';
+         sInformacao := sInformacao + ' - Fonte IBPT (' + sVersao + ').';
+      End;
+   Finally
+      qry.Free;
+   End;
+   Result := sInformacao;
+End;
+
+Class Function TNFeScript.PrepararTotalCredSN(Const Conexao: TFDConnection; Const IdNFe: Integer): String;
+Var
+   rAliqCred, rVlrCred, rTotal, rTotalCred: Real;
+   sScript: STring;
+   qry: TFDQuery;
+Begin
+   rAliqCred := 0;
+   rVlrCred := 0;
+   rTotal := 0;
+   rTotalCred := 0;
+   Result := '';
+   sScript := Format(
+      'SELECT COALESCE(PCREDSN_N29, 0) AS PCREDSN_N29 , COALESCE(VCREDICMSSN_N30, 0) AS VCREDICMSSN_N30 FROM NFE_PROD_ICMS WHERE ID_NFE = %d', [IdNFe]);
+
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := sScript;
+      qry.Open;
+
+      While Not qry.Eof Do
+      Begin
+         rAliqCred := qry.FieldByName('PCREDSN_N29').AsFloat;
+         rAliqCred := RoundTo(rAliqCred, -2);
+         rVlrCred := qry.FieldByName('VCREDICMSSN_N30').AsFloat;
+         rVlrCred := RoundTo(rVlrCred, -2);
+         rTotalCred := rTotalCred + rVlrCred;
+         rTotal := rTotal + (rVlrCred * rAliqCred);
+         qry.Next;
+      End;
+   Finally
+      qry.Free;
+   End;
+
+   rTotal := RoundTo(rTotal, -2);
+   If (rTotalCred > 0)
+   Then
+   Begin
+      rAliqCred := RoundTo((rTotal / rTotalCred), -2);
+   End
+   Else
+   Begin
+      rAliqCred := 0.0;
+   End;
+
+   If ((rTotalCred > 0) And (rAliqCred > 0))
+   Then
+   Begin
+      Result :=
+         'II - "PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE R$ ' + FormatFloat('#####0.00', rTotalCred) +
+         ' CORRESPONDENTE À ALÍQUOTA DE ' + FormatFloat('#0.00', rAliqCred) + '%, NOS TERMOS DO ARTIGO 23 DA LC 123". ';
+   End
+   Else
+   Begin
+      Result :=
+         'II - "NÃO GERA DIREITO A CRÉDITO FISCAL DE ICMS, DE ISS E DE IPI".  ';
+   End;
 End;
 
 Class Function TNFeScript.ScriptAutorizacao(Const IdNFe: Integer): String;
@@ -170,7 +430,7 @@ End;
 Class Function TNFeScript.ScriptInfoAdicional(Const IdNFe: Integer): String;
 Begin
    Result := Format(
-      'SELECT FINNFE_B25, TPNF_B11, INFADFISCO_Z02, INFCPL_Z03 FROM NFE WHERE ID_NFE = %d ', [IdNFe]);
+      'SELECT ID_NFE, FINNFE_B25, TPNF_B11, INFADFISCO_Z02, INFCPL_Z03 FROM NFE WHERE ID_NFE = %d ', [IdNFe]);
 End;
 
 Class Function TNFeScript.ScriptInfoContrib(Const IdNFe: Integer): String;
@@ -188,44 +448,44 @@ End;
 Class Function TNFeScript.ScriptISIBSCBS(Const IdNFe: Integer): String;
 Begin
    Result := Format(
-   'SELECT ID_NFE, ID_ITEM, ' +
-   { *IS* }
+      'SELECT ID_NFE, ID_ITEM, ' +
+      { *IS* }
       'CSTIS_UB02, CCLASSTRIBIS_UB03, VBCIS_UB05, PIS_UB06, PISESPEC_UB07, UTRIB_UB09, QTRIB_UB10,VIS_UB11, ' +
-   { *IBS/CBS* }
+      { *IBS/CBS* }
       'CST_UB13, CCLASSTRIB_UB14, INDDOACAO_UB14A, VBC_UB16, ' +
-   { *IBS-UF* }
+      { *IBS-UF* }
       'PIBSUF_UB18, PDIF_UB22, VDIF_UB23, PDEVTRIB_UB24A,VDEVTRIB_UB25, PREDALIQ_UB27, PALIQEFET_UB28, ' +
-   { *IBS-Mun* }
+      { *IBS-Mun* }
       'PIBSMUN_UB37, PDIF_UB41, VDIF_UB42, PDEVTRIB_UB43A,VDEVTRIB_UB44, PREDALIQ_UB46, PALIQEFET_UB47, ' +
-   { *Totais -IBS-UF/Mun* }
+      { *Totais -IBS-UF/Mun* }
       'VIBSUF_UB35, VIBSMUN_UB54, VIBS_UB54A, ' +
-   { *CBS* }
+      { *CBS* }
       'PCBS_UB56, PDIF_UB60, VDIF_UB61, VDEVTRIB_UB63, PREDALIQ_UB65, PALIQEFET_UB66, TPALCZFMCBS_UB66B, NPROCSUFRAMA_UB66C, PALIQEFETREGCBS_UB66D, VTRIBREGCBS_UB66E, ' +
-   { *Total-CBS* }
+      { *Total-CBS* }
       'VCBS_UB67, ' +
-   { *IBS/CBS* }
+      { *IBS/CBS* }
       'CSTREG_UB69, CCLASSTRIBREG_UB70, ' +
-   { *IBS* }
+      { *IBS* }
       'PALIQEFETREGIBSUF_UB71, VTRIBREGIBSUF_UB72, PALIQEFETREGIBSMUN_UB72A, VTRIBREGIBSMUN_UB72B, ' +
-   { *CBS* }
+      { *CBS* }
       'PALIQEFETREGCBS_UB72C, VTRIBREGCBS_UB72D, ' +
-   { *IBS/CBS* }
+      { *IBS/CBS* }
       'PALIQIBSUF_UB82B, VTRIBIBSUF_UB82C, PALIQIBSMUN_UB82D, VTRIBIBSMUN_UB82E, PALIQCBS_UB82F, VTRIBCBS_UB82G, ' +
-   { *MONOFÁSICO* }
-   { *IBS-AdRem* }
+      { *MONOFÁSICO* }
+      { *IBS-AdRem* }
       'QBCMONO_UB86A, ADREMIBS_UB86B, VIBSMONO_UB86C, QBCMONORETEN_UB87A, ADREMIBSRETEN_UB87B, VIBSMONORETEN_UB87C, VIBSMONORET_UB88A, ' +
       'QBCBIOCOMB_UB89A, VIBSDIFERENCA_UB89B, ' +
-   { *IBS-AdValorem* }
+      { *IBS-AdValorem* }
       'VBCMONO_UB91A, PALIQMONOUF_UB91B, VIBSMONOUF_UB91C, PALIQMONOMUN_UB91D, VIBSMONOMUN_UB91E, VIBSMONO_UB91F, ' +
       'VBCMONORETEN_UB92A, PALIQMONORETEN_UB92B, VIBSMONORETEN_UB92C, VIBSMONORET_UB93A, ' +
       'QBCBIOCOMB_UB94A, VIBSDIFERENCA_UB94B, ' +
-   { *CBS-AdRem* }
+      { *CBS-AdRem* }
       'QBCMONO_UB96A, ADREMCBS_UB96B, VCBSMONO_UB96C, QBCMONORETEN_UB97A, ADREMCBSRETEN_UB97B, VCBSMONORETEN_UB97C, ' +
       'VCBSMONORET_UB98A, QBCBIOCOMB_UB99A, VCBSDIFERENCA_UB99B, ' +
-   { *CBS-AdValorem* }
+      { *CBS-AdValorem* }
       'VBCMONO_UB101A, PALIQMONOCBS_UB101B, VCBSMONO_UB101C, VBCMONORETEN_UB102A, PALIQMONORETEN_UB102B, VCBSMONORETEN_UB102C, VCBSMONORET_UB103A, ' +
       'QBCBIOCOMB_UB104A, VCBSDIFERENCA_UB104B, ' +
-   { *TOTAL IBS/CBS* }
+      { *TOTAL IBS/CBS* }
       'VTOTIBSMONOITEM_UB105A, VTOTCBSMONOITEM_UB105B ' +
       'FROM NFE_PROD_IS_IBS_CBS ' +
       'WHERE (ID_NFE = %d) ', [IdNFe]);

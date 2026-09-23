@@ -69,13 +69,14 @@ Begin
    Try
       Try
          TNFeMapper.Mapear(FConnection.Connection, IdNFe, NFeDTO);
+
          LJSON := TNFeJsonBuilder.Build(NFeDTO);
          Try
-            MemoJSON.Text := TUtils.FormatarJSON(LJSON.ToString);
-            //MemoJSON.Text := LJSON.ToJSON;
+            MemoJSON.Text := TUtils.FormatarJSON(LJSON.ToJSON);
          Finally
             LJSON.Free;
          End;
+
       Finally
          NFeDTO.Free;
       End;
