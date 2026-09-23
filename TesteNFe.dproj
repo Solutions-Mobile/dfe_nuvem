@@ -134,6 +134,7 @@
         <DCCReference Include="NFe.IBSCBSTot.JsonBuilder.pas"/>
         <DCCReference Include="NFe.TribRegular.JsonBuilder.pas"/>
         <DCCReference Include="NFe.TribCompraGov.JsonBuilder.pas"/>
+        <DCCReference Include="NFe.InfoComplementar.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
