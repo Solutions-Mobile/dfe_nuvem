@@ -3,53 +3,28 @@ Unit NFe.InfoComplementar;
 Interface
 
 Uses
-   System.SysUtils, System.Math, FireDAC.Comp.Client;
+   System.SysUtils, System.Math, FireDAC.Comp.Client,  FireDAC.Stan.Param;
 
 Type
    TNFeInfoComplementar = Class
    Private
-      Class Procedure AdicionarInfo(
-         Var AResultado: String;
-         Const AInfo: String
-         ); Static;
-
-      Class Function PrepararInfoMotorista(
-         Const AConexao: TFDConnection;
-         Const AIdNFe: Integer
-         ): String; Static;
-
-      Class Function PrepararInfoTributosIBPT(
-         Const AConexao: TFDConnection;
-         Const AIdNFe: Integer
-         ): String; Static;
-
-      Class Function PrepararTotalCredSN(
-         Const AConexao: TFDConnection;
-         Const AIdNFe: Integer
-         ): String; Static;
-
+      Class Procedure PegarAliquotaTributosIBPT(Const Conexao: TFDConnection; IdNFe: Integer; NCM: String; Var AliqFed, AliqNac, AliqEst, AliqMun: Real; Versao: String);
+      Class Procedure AdicionarInfo(Var AResultado: String; Const AInfo: String); Static;
+      Class Function PrepararInfoMotorista(Const AConexao: TFDConnection; Const AIdNFe: Integer): String; Static;
+      Class Function PrepararInfoTributosIBPT(Const AConexao: TFDConnection; Const AIdNFe: Integer): String; Static;
+      Class Function PrepararTotalCredSN(Const AConexao: TFDConnection; Const AIdNFe: Integer): String; Static;
    Public
-      Class Function Preparar(
-         Const AConexao: TFDConnection;
-         Const AIdNFe: Integer
-         ): String; Static;
+      Class Function PrepararInfoComplementar(Const AConexao: TFDConnection; Const AIdNFe: Integer): String; Static;
    End;
 
 Implementation
 
 Uses
-   Data.DB,
-   NFe.Scripts,
-   Funcoes;
+   Data.DB, NFe.Scripts, MZ.Biblioteca;
 
-{ --------------------------------------------------------------------------- }
 { TNFeInfoComplementar }
-{ --------------------------------------------------------------------------- }
 
-Class Procedure TNFeInfoComplementar.AdicionarInfo(
-   Var AResultado: String;
-   Const AInfo: String
-   );
+Class Procedure TNFeInfoComplementar.AdicionarInfo(Var AResultado: String; Const AInfo: String);
 Begin
    If Trim(AInfo) = '' Then
       Exit;
@@ -60,12 +35,33 @@ Begin
    AResultado := AResultado + Trim(AInfo);
 End;
 
-{ --------------------------------------------------------------------------- }
+Class Procedure TNFeInfoComplementar.PegarAliquotaTributosIBPT(Const Conexao: TFDConnection; IdNFe: Integer; NCM: String;
+   Var AliqFed, AliqNac, AliqEst, AliqMun: Real; Versao: String);
+Var
+   Script, sNCM: String;
+   qry: TFDQuery;
+Begin
+   NCM := TFuncoes.RetornaNumero(NCM, '');
+   sNCM := Copy(NCM, 1, 4) + '.' + Copy(NCM, 5, 2) + '.' + Copy(NCM, 7, 2);
+   sNCM := QuotedStr(sNCM);
+   Script := Format('SELECT ALIQNAC, ALIQFED, ALIQEST, ALIQMUN, CHAVEIBPT FROM PRODUTO_NCM WHERE PNC_A_NCM = %s', [sNCM]);
 
-Class Function TNFeInfoComplementar.Preparar(
-   Const AConexao: TFDConnection;
-   Const AIdNFe: Integer
-   ): String;
+   qry := TFDQuery.Create(Nil);
+   Try
+      qry.Connection := Conexao;
+      qry.SQL.Text := Script;
+      qry.Open;
+      AliqFed := qry.FieldByName('ALIQFED').AsFloat;
+      AliqNac := qry.FieldByName('ALIQNAC').AsFloat;
+      AliqEst := qry.FieldByName('ALIQEST').AsFloat;
+      AliqMun := qry.FieldByName('ALIQMUN').AsFloat;
+      Versao := qry.FieldByName('CHAVEIBPT').AsString;
+   Finally
+      qry.Free;
+   End;
+End;
+
+Class Function TNFeInfoComplementar.PrepararInfoComplementar(Const AConexao: TFDConnection; Const AIdNFe: Integer): String;
 Var
    LQuery: TFDQuery;
    LInfo: String;
@@ -89,9 +85,7 @@ Begin
       If LQuery.IsEmpty Then
          Exit;
 
-      Result := TFuncoes.RemoverCharControle(
-         LQuery.FieldByName('INFCPL_Z03').AsString
-         );
+      Result := TFuncoes.RemoverCharControle(LQuery.FieldByName('INFCPL_Z03').AsString);
 
       Result := Copy(Trim(Result), 1, 4000);
 
@@ -104,33 +98,17 @@ Begin
          (LTpNF = '1') And
          (LCRT <> '3') Then
       Begin
-         AdicionarInfo(
-            Result,
-            'I - "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL".'
-            );
-
-         LInfo := PrepararTotalCredSN(
-            AConexao,
-            AIdNFe
-            );
-
+         AdicionarInfo(Result, 'I - "DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PELO SIMPLES NACIONAL".');
+         LInfo := PrepararTotalCredSN(AConexao, AIdNFe);
          AdicionarInfo(Result, LInfo);
       End;
 
       { Informação dos tributos aproximados - IBPT }
-      LInfo := PrepararInfoTributosIBPT(
-         AConexao,
-         AIdNFe
-         );
-
+      LInfo := PrepararInfoTributosIBPT(AConexao, AIdNFe);
       AdicionarInfo(Result, LInfo);
 
       { Informação do motorista }
-      LInfo := PrepararInfoMotorista(
-         AConexao,
-         AIdNFe
-         );
-
+      LInfo := PrepararInfoMotorista(AConexao, AIdNFe);
       AdicionarInfo(Result, LInfo);
 
       { Limite da tag InfCpl }
@@ -140,12 +118,7 @@ Begin
    End;
 End;
 
-{ --------------------------------------------------------------------------- }
-
-Class Function TNFeInfoComplementar.PrepararInfoMotorista(
-   Const AConexao: TFDConnection;
-   Const AIdNFe: Integer
-   ): String;
+Class Function TNFeInfoComplementar.PrepararInfoMotorista(Const AConexao: TFDConnection; Const AIdNFe: Integer): String;
 Var
    LQuery: TFDQuery;
    LPlaca: String;
@@ -177,17 +150,9 @@ Begin
       If LQuery.IsEmpty Then
          Exit;
 
-      LMotorista := Trim(
-         LQuery.FieldByName('VND_A_MOT').AsString
-         );
-
-      LPlaca := Trim(
-         LQuery.FieldByName('VCL_A_PLC').AsString
-         );
-
-      LKM := Trim(
-         LQuery.FieldByName('VND_A_KM').AsString
-         );
+      LMotorista := Trim(LQuery.FieldByName('VND_A_MOT').AsString);
+      LPlaca := Trim(LQuery.FieldByName('VCL_A_PLC').AsString);
+      LKM := Trim(LQuery.FieldByName('VND_A_KM').AsString);
    Finally
       LQuery.Free;
    End;
@@ -204,26 +169,18 @@ Begin
    Result := Trim(Result);
 End;
 
-{ --------------------------------------------------------------------------- }
-
-Class Function TNFeInfoComplementar.PrepararInfoTributosIBPT(
-   Const AConexao: TFDConnection;
-   Const AIdNFe: Integer
-   ): String;
+Class Function TNFeInfoComplementar.PrepararInfoTributosIBPT(Const AConexao: TFDConnection; Const AIdNFe: Integer): String;
 Var
    LQuery: TFDQuery;
-   LVlrProd: Double;
-   LAliqFed: Double;
-   LAliqNac: Double;
-   LAliqEst: Double;
-   LAliqMun: Double;
-   LTotProd: Double;
-   LTotNac: Double;
-   LTotEst: Double;
-   LTotMun: Double;
-   LAliqNac: Double;
-   LAliqEst: Double;
-   LAliqMun: Double;
+   LVlrProd: Real;
+   LAliqFed: Real;
+   LAliqNac: Real;
+   LAliqEst: Real;
+   LAliqMun: Real;
+   LTotProd: Real;
+   LTotNac: Real;
+   LTotEst: Real;
+   LTotMun: Real;
    LVersaoIBPT: String;
    LVersao: String;
    LNCM: String;
@@ -257,73 +214,31 @@ Begin
          LAliqMun := 0;
          LVersaoIBPT := '';
 
-         PegarAliquotaTributosIBPT(
-            AConexao,
-            AIdNFe,
-            LNCM,
-            LAliqFed,
-            LAliqNac,
-            LAliqEst,
-            LAliqMun,
-            LVersaoIBPT
-            );
+         PegarAliquotaTributosIBPT(AConexao, AIdNFe, LNCM, LAliqFed, LAliqNac, LAliqEst, LAliqMun, LVersaoIBPT);
 
          If Trim(LVersaoIBPT) <> '' Then
             LVersao := LVersaoIBPT;
 
-         LTotNac := LTotNac +
-            RoundTo(LVlrProd * (LAliqFed / 100), -2);
-
-         LTotEst := LTotEst +
-            RoundTo(LVlrProd * (LAliqEst / 100), -2);
-
-         LTotMun := LTotMun +
-            RoundTo(LVlrProd * (LAliqMun / 100), -2);
-
+         LTotNac := LTotNac + RoundTo(LVlrProd * (LAliqFed / 100), -2);
+         LTotEst := LTotEst + RoundTo(LVlrProd * (LAliqEst / 100), -2);
+         LTotMun := LTotMun + RoundTo(LVlrProd * (LAliqMun / 100), -2);
          LQuery.Next;
       End;
 
       If LTotProd <= 0 Then
          Exit;
 
-      LAliqNac := RoundTo(
-         (LTotNac / LTotProd) * 100,
-         -2
-         );
-
-      LAliqEst := RoundTo(
-         (LTotEst / LTotProd) * 100,
-         -2
-         );
-
-      LAliqMun := RoundTo(
-         (LTotMun / LTotProd) * 100,
-         -2
-         );
-
+      LAliqNac := RoundTo((LTotNac / LTotProd) * 100, -2);
+      LAliqEst := RoundTo((LTotEst / LTotProd) * 100, -2);
+      LAliqMun := RoundTo((LTotMun / LTotProd) * 100, -2);
       Result :=
          'Valor aprox. tributos ' +
-         'Fed-R$' +
-         FormatFloat('###0.00', LTotNac) +
-         '(' +
-         FormatFloat('#0.00', LAliqNac) +
-         '%), ' +
-
-         'Est-R$' +
-         FormatFloat('###0.00', LTotEst) +
-         '(' +
-         FormatFloat('#0.00', LAliqEst) +
-         '%), ' +
-
-         'Mun-R$' +
-         FormatFloat('###0.00', LTotMun) +
-         '(' +
-         FormatFloat('#0.00', LAliqMun) +
-         '%)';
+         'Fed-R$' + FormatFloat('###0.00', LTotNac) + '(' + FormatFloat('#0.00', LAliqNac) + '%), ' +
+         'Est-R$' + FormatFloat('###0.00', LTotEst) + '(' + FormatFloat('#0.00', LAliqEst) + '%), ' +
+         'Mun-R$' + FormatFloat('###0.00', LTotMun) + '(' + FormatFloat('#0.00', LAliqMun) + '%)';
 
       If Trim(LVersao) <> '' Then
-         Result := Result +
-            ' - Fonte IBPT (' + LVersao + ').'
+         Result := Result + ' - Fonte IBPT (' + LVersao + ').'
       Else
          Result := Result + '.';
    Finally
@@ -331,12 +246,7 @@ Begin
    End;
 End;
 
-{ --------------------------------------------------------------------------- }
-
-Class Function TNFeInfoComplementar.PrepararTotalCredSN(
-   Const AConexao: TFDConnection;
-   Const AIdNFe: Integer
-   ): String;
+Class Function TNFeInfoComplementar.PrepararTotalCredSN(Const AConexao: TFDConnection; Const AIdNFe: Integer): String;
 Var
    LQuery: TFDQuery;
    LAliqCred: Double;
@@ -364,19 +274,11 @@ Begin
 
       While Not LQuery.Eof Do
       Begin
-         LAliqCred := RoundTo(
-            LQuery.FieldByName('PCREDSN_N29').AsFloat,
-            -2
-            );
-
+         LAliqCred := RoundTo(LQuery.FieldByName('PCREDSN_N29').AsFloat, -2);
          LVlrCred := RoundTo(
-            LQuery.FieldByName('VCREDICMSSN_N30').AsFloat,
-            -2
-            );
-
+            LQuery.FieldByName('VCREDICMSSN_N30').AsFloat, -2);
          LTotalCred := LTotalCred + LVlrCred;
          LTotal := LTotal + (LVlrCred * LAliqCred);
-
          LQuery.Next;
       End;
    Finally
@@ -386,23 +288,15 @@ Begin
    LTotal := RoundTo(LTotal, -2);
 
    If LTotalCred > 0 Then
-      LAliqCred := RoundTo(
-         LTotal / LTotalCred,
-         -2
-         )
+      LAliqCred := RoundTo(LTotal / LTotalCred, -2)
    Else
       LAliqCred := 0;
 
-   If (LTotalCred > 0) And
-      (LAliqCred > 0) Then
+   If (LTotalCred > 0) And (LAliqCred > 0) Then
    Begin
       Result :=
-         'II - "PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS ' +
-         'NO VALOR DE R$ ' +
-         FormatFloat('#####0.00', LTotalCred) +
-         ' CORRESPONDENTE À ALÍQUOTA DE ' +
-         FormatFloat('#0.00', LAliqCred) +
-         '%, NOS TERMOS DO ARTIGO 23 DA LC 123".';
+         'II - "PERMITE O APROVEITAMENTO DO CRÉDITO DE ICMS NO VALOR DE R$ ' + FormatFloat('#####0.00', LTotalCred) +
+         ' CORRESPONDENTE À ALÍQUOTA DE ' + FormatFloat('#0.00', LAliqCred) + '%, NOS TERMOS DO ARTIGO 23 DA LC 123".';
    End
    Else
    Begin

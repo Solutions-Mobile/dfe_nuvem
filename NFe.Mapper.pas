@@ -4,7 +4,7 @@ Interface
 
 Uses
    System.SysUtils, Data.DB, NFe.DTO, NFe.ICMS.JsonBuilder,
-   FireDAC.Comp.Client, NFe.Scripts;
+   FireDAC.Comp.Client, NFe.Scripts, NFe.InfoComplementar;
 
 Type
    TNFeMapper = Class
@@ -112,8 +112,8 @@ Type
 
 Implementation
 
-uses
-  MZ.Biblioteca;
+Uses
+   MZ.Biblioteca;
 
 { TNFeMapper }
 
@@ -314,9 +314,8 @@ Begin
       Exit;
    Try
       ADTO.InfoAdicional.infAdFisco := S(LQuery, 'INFADFISCO_Z02');
-
-      // ADTO.InfoAdicional.infCpl := S(LQuery, 'INFCPL_Z03');
-      InfoComplementar := TNFeScript.PrepararInfoComplementar(AConnection, AIdNFe);
+      //
+      InfoComplementar := TNFeInfoComplementar.PrepararInfoComplementar(AConnection, AIdNFe);
       ADTO.InfoAdicional.infCpl := InfoComplementar;
    Finally
       LQuery.Free;

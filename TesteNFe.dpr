@@ -36,7 +36,8 @@ uses
   NFe.IBSCBSTot.JsonBuilder in 'NFe.IBSCBSTot.JsonBuilder.pas',
   NFe.TribRegular.JsonBuilder in 'NFe.TribRegular.JsonBuilder.pas',
   NFe.TribCompraGov.JsonBuilder in 'NFe.TribCompraGov.JsonBuilder.pas',
-  NFe.InfoComplementar in 'NFe.InfoComplementar.pas';
+  NFe.InfoComplementar in 'NFe.InfoComplementar.pas',
+  NFe.IBSCBS.Regras in 'NFe.IBSCBS.Regras.pas';
 
 {$R *.res}
 
